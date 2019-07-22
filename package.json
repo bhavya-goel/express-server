@@ -1,0 +1,22 @@
+{
+  "name": "task",
+  "version": "1.0.0",
+  "description": "patterns",
+  "main": "index.js",
+  "scripts": {
+
+    "diamond": "nodejs /home/bhavya.goel/express-server/extra/pattern/diamond.js  5",
+    "equilateral": "nodejs /home/bhavya.goel/express-server/extra/pattern/equilateral.js  10",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhavya-goel/express-server.git"
+  },
+  "author": "Bhavya goel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bhavya-goel/express-server/issues"
+  },
+  "homepage": "https://github.com/bhavya-goel/express-server#readme"
+}
