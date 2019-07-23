@@ -9,14 +9,8 @@ const users =
 ]
 
 const validateEmail = function(email){
-let pattern = /[a-zA-Z0-9]+@successive\.tech/
-let [_email,...rest] = pattern.exec(email)
-if(_email == null){
-    return false
-}
-else{
- return email === _email
-}
+let pattern = /^[a-zA-Z0-9]+@successive\.tech/
+return pattern.test(email)
 }
 
 const validateUsers = function(users){
