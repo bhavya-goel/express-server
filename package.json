@@ -1,13 +1,13 @@
 {
   "name": "task",
   "version": "1.0.0",
-  "description":"",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "permissions": "node /home/bhavya.goel/express-server/extra/utils/permissions.js",
-    "validation": "node /home/bhavya.goel/express-server/extra/utils/validation.js",
-    "diamond": "node /home/bhavya.goel/express-server/extra/pattern/diamond.js  5",
-    "equilateral": "node /home/bhavya.goel/express-server/extra/pattern/equilateral.js  10",
+    "permissions": "node extra/utils/permissions.js",
+    "validation": "node extra/utils/validation.js",
+    "diamond": "node extra/pattern/diamond.js",
+    "equilateral": "node extra/pattern/equilateral.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +19,8 @@
   "bugs": {
     "url": "https://github.com/bhavya-goel/express-server/issues"
   },
-  "homepage": "https://github.com/bhavya-goel/express-server#readme"
-  
+  "homepage": "https://github.com/bhavya-goel/express-server#readme",
+  "dependencies": {
+    "readline": "^1.3.0"
+  }
 }
