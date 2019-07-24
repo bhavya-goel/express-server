@@ -1,13 +1,6 @@
 
-const permissions = {
-    'getUsers': {
-        all: ['head-trainer'],
-        read : ['trainee', 'trainer'],
-        write : ['trainer'],
-        delete: []
-    }
-}
-function hasPermissions(moduleName, role, permissionType){
+import {permissions} from "../../extra/constants.js"
+export default function hasPermissions(moduleName, role, permissionType){
     
     // To check valid Module Name
     if(!permissions.hasOwnProperty(moduleName)){
@@ -30,5 +23,4 @@ function hasPermissions(moduleName, role, permissionType){
 
     }
 }  
-hasPermissions("getUsers", "head-trainer", "all")
 
