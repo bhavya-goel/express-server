@@ -3,3 +3,4 @@ node_modules
 .vscode/launch.json
 package-lock.json
 install_nvm.sh
+.vscode/settings.json
