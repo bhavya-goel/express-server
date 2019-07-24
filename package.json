@@ -5,10 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start:extra": "babel-node extra",
-    "permissions": "node extra/utils/permissions.js",
-    "validation": "node extra/utils/validation.js",
-    "diamond": "node extra/pattern/diamond.js",
-    "equilateral": "node extra/pattern/equilateral.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
