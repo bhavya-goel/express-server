@@ -5,9 +5,9 @@ const permissions = {
         read : ['trainee', 'trainer'],
         write : ['trainer'],
         delete: []
-        }
+    }
 }
-const hasPermissions = function(moduleName, role, permissionType){
+function hasPermissions(moduleName, role, permissionType){
     
     // To check valid Module Name
     if(!permissions.hasOwnProperty(moduleName)){
