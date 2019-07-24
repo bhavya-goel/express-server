@@ -9,7 +9,7 @@ const users =
 ]
 
 const validateEmail = function(email){
-let pattern = /^[a-zA-Z0-9]+@successive\.tech/
+let pattern = /^[a-zA-Z0-9]+@successive\.tech$/
 return pattern.test(email)
 }
 
