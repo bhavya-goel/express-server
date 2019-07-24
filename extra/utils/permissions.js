@@ -31,3 +31,4 @@ function hasPermissions(moduleName, role, permissionType){
     }
 }  
 hasPermissions("getUsers", "head-trainer", "all")
+
