@@ -8,12 +8,12 @@ const users =
     {traineeEmail:"trainee7@successive.tech",reviewerEmail:"reviewer7@successive.tech"}
 ]
 
-const validateEmail = function(email){
-let pattern = /^[a-zA-Z0-9]+@successive\.tech$/
-return pattern.test(email)
+function validateEmail(email){
+    let pattern = /^[a-zA-Z0-9]+@successive\.tech$/
+    return pattern.test(email)
 }
 
-const validateUsers = function(users){
+function validateUsers(users){
     const validUser = users.filter( (value)=> {
         return (validateEmail(value.traineeEmail) && validateEmail(value.reviewerEmail))
 
