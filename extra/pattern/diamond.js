@@ -43,3 +43,4 @@ function diamond(num){
 
 }
 diamond(num)
+
