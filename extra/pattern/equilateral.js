@@ -23,3 +23,4 @@ function equilateral(num){
     }
 }
 equilateral(num)
+
