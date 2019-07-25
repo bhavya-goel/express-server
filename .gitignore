@@ -4,3 +4,4 @@ node_modules
 package-lock.json
 install_nvm.sh
 .vscode/settings.json
+dist
