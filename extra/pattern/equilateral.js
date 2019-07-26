@@ -1,8 +1,8 @@
-'use strict'
-let num = process.argv[2]
-function equilateral(num){
-    if ( num < 2 || num > 10){
-        console.log("Please enter integer between 2 to 10")
+
+export default function equilateral(num){
+    'use strict'
+    if ( num < 2 || num > 10 || num == undefined){
+        console.log("Please enter integer between 2 to 10 to print equilateral triangle")
     }
     else{
         // to count rows
@@ -22,5 +22,5 @@ function equilateral(num){
     
     }
 }
-equilateral(num)
+
 

@@ -1,9 +1,8 @@
-'use strict';
-let num = process.argv[2]
-function diamond(num){
+
+export default function diamond(num){
     'use strict';
-    if ( num < 2 || num > 10){
-        console.log("Please enter integer between 2 to 10")
+    if ( num < 2 || num > 10 || num == undefined){
+        console.log("Please enter integer between 2 to 10 to print a diamond")
     }
     else{
         // for top half pyramid
@@ -42,5 +41,5 @@ function diamond(num){
     
 
 }
-diamond(num)
+
 
