@@ -1,2 +1,2 @@
-export { configuration } from './configuration'
+export { configuration } from './configuration';
 export { IConfig } from './IConfig';
