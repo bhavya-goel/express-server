@@ -1,5 +1,4 @@
 node_modules
-.babelrc
 .vscode/launch.json
 package-lock.json
 install_nvm.sh
