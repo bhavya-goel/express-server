@@ -1,4 +1,4 @@
-import express = require('express');
+import express from 'express';
 import { IConfig } from './config'
 const app = express();
 export class server {
@@ -18,7 +18,7 @@ export class server {
       this.run()  
    }
    run(){
-      let {port,} = this.config;
+      let {port} = this.config;
       app.listen(port,() => {
          console.log("server running");
       })
