@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:extra": "npx babel-node extra",
+    "start:extra": "babel-node extra",
+    "start:extraTs": "tsc-watch --project . --onSuccess \" npm run nodemon\"",
+    "nodemon": "nodemon ./dist/index.js",
+    "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,10 +20,22 @@
     "url": "https://github.com/bhavya-goel/express-server/issues"
   },
   "homepage": "https://github.com/bhavya-goel/express-server#readme",
-  "dependencies": {},
+  "dependencies": {
+    "tslint": "^5.18.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
-    "@babel/preset-env": "^7.5.5"
+    "@babel/preset-env": "^7.5.5",
+    "commitizen": "^4.0.3",
+    "husky": "^3.0.1",
+    "nodemon": "^1.19.1",
+    "tsc-watch": "^2.2.1",
+    "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
