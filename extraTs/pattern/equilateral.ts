@@ -1,6 +1,5 @@
 
 export default function equilateral(num: number) {
-    'use strict';
     if ( num < 2 || num > 10 || num === undefined) {
         console.log('Please enter integer between 2 to 10 to print equilateral triangle');
     }
