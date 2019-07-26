@@ -1,4 +1,4 @@
 import { configuration, IConfig } from './config';
-import { server } from './Server';
-let server1 = new server(configuration);
+import { Server } from './Server';
+const server1 = new Server(configuration);
 server1.bootstrap();
