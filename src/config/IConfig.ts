@@ -1,3 +1,4 @@
-export interface IConfig{
+export interface IConfig {
     port: string;
+    env: string;
 }
