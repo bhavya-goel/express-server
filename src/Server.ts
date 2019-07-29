@@ -2,7 +2,9 @@ import express = require ('express');
 import { IConfig } from './config';
 const app = express();
 export class Server {
-      constructor(private config: IConfig) {
+
+   private config: IConfig;
+      constructor(config: IConfig) {
       this.config = config;
    }
    public bootstrap() {
@@ -16,7 +18,7 @@ export class Server {
       this.run();
    }
    public run() {
-      const {port} = this.config;
+      const {config: { port}} = this;
       app.listen(port, () => {
          console.log('server running');
       });
