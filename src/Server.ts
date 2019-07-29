@@ -1,8 +1,7 @@
-import express = require ('express');
+import * as express from 'express';
 import { IConfig } from './config';
-const app = express();
 export class Server {
-
+   private app = express();
    private config: IConfig;
       constructor(config: IConfig) {
       this.config = config;
@@ -12,14 +11,14 @@ export class Server {
       return this;
    }
    public setupRoutes() {
-      app.get('/health-check', (req, res) => {
+      this.app.get('/health-check', (req, res) => {
          res.send('I am OK');
       });
       this.run();
    }
    public run() {
       const {config: { port}} = this;
-      app.listen(port, () => {
+      this.app.listen(port, () => {
          console.log('server running');
       });
       return this;
