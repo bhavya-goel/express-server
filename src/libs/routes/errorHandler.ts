@@ -1,4 +1,4 @@
-export const errorHandlerMsg = () => {
+export const errorHandlerMsg = (errorMessage, request, response) => {
 				response.send({
 				error: errorMessage,
 				message: 'error',
