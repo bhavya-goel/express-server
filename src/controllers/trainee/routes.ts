@@ -3,7 +3,7 @@ import { traineeRoutes } from './Controller';
 const traineeRouter = express.Router();
 traineeRouter.route('/')
                 .get(traineeRoutes.get)
-                .post(traineeRoutes.post)
-                .put(traineeRoutes.put)
+                .post(traineeRoutes.create)
+                .put(traineeRoutes.update)
                 .delete(traineeRoutes.delete);
 export default traineeRouter;
