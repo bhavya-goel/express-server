@@ -1,7 +1,6 @@
 
 import {permissions} from "../../extra/constants.js"
 export default function hasPermissions(moduleName, role, permissionType){
-    
     // To check valid Module Name
     if(!permissions.hasOwnProperty(moduleName)){
         console.log( "no such module found")
@@ -13,9 +12,12 @@ export default function hasPermissions(moduleName, role, permissionType){
         return false
     }
     //To Check valid role
-    else if(permissions[moduleName][permissionType].indexOf(role) == -1){
+    else if(permissions[moduleName]['all'].includes(role)) {
+        console.log(role,"is assigned \npermission -",permissionType,"\nfor module - ", moduleName)
+        return true
+    }else if(!permissions[moduleName][permissionType].includes(role)) {
         console.log(role,"is not assigned permission - ",permissionType,"for module", moduleName)
-        return false
+        return true
     }
     else{
         console.log(role,"is assigned \npermission -",permissionType,"\nfor module - ", moduleName)
