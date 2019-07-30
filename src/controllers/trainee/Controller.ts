@@ -6,14 +6,14 @@ class TraineeRoutes {
             name: 'Trainee1',
         });
     }
-    public post(request: Request, response: Response) {
+    public create(request: Request, response: Response) {
         response.send({
             data: 'trainee added',
             id: 1,
             name: 'Trainee1',
         });
     }
-    public put(request: Request, response: Response) {
+    public update(request: Request, response: Response) {
         response.send({
             data: 'trainee updated',
             id: 1,
