@@ -1,0 +1,1 @@
+export { traineeRouter } from './trainee';
