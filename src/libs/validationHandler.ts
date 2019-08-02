@@ -17,11 +17,6 @@ const validationHandler = (config) => (req, res, next) => {
                             })
                             break;
                         }
-                        // if key not passed and custom error function present
-                        else if((config[key]['errorMessage'] === undefined) && 'custom' in config[key]){
-                            config[key]['custom'](2);
-                            break;
-                        }
                         // if key not passed and no error message present
                         else if(config[key]['errorMessage'] === undefined){
                             next(`${key} required`)
@@ -58,6 +53,9 @@ const validationHandler = (config) => (req, res, next) => {
                             break;
                         }
                         next(`${key} not an object`)
+                        break;
+                    case 'custom':
+                        config[key].custom(req[place][key]);
                         break;
                 }
             }
