@@ -52,10 +52,7 @@ const validation = {
             required: true,
             isObject: true,
             custom: (dataToUpdate) => {
-                throw {
-                    error: 'Error Occured',
-                    message: 'Message',
-                };
+        
             },
         },
         id: {
