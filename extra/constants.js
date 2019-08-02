@@ -1,3 +1,4 @@
+// permission object to define permission for different roles
 export const permissions = {
     'getUsers': {
         all: ['head-trainer'],
@@ -6,7 +7,7 @@ export const permissions = {
         delete: []
     }
 }
-
+// users array to be validated
 export const users = 
 [
     {traineeEmail:"trainee1@successive.tech",reviewerEmail:"reviewer1@successive.tech"},

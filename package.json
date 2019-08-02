@@ -25,6 +25,7 @@
     "body-parser": "^1.19.0",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
+    "git": "^0.1.5",
     "tslint": "^5.18.0"
   },
   "devDependencies": {
@@ -32,7 +33,7 @@
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "commitizen": "^4.0.3",
-    "husky": "^3.0.1",
+    "husky": "^3.0.2",
     "nodemon": "^1.19.1",
     "tsc-watch": "^2.2.1",
     "typescript": "^3.5.3"
