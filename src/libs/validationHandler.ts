@@ -43,7 +43,7 @@ const validationHandler = (config) => (req, res, next) => {
                             break;
                     // checks if key is number or not
                     case 'number':
-                            if(isNaN(Number(req.query[key]))){
+                            if(isNaN(Number(req[place][key]))){
                                 next(`${key} not a number`)
                             }
                             break;
