@@ -1,5 +1,5 @@
 import { IPermissions, IUsers } from './interfaces';
-export const permissions: IUermissions = {
+export const permissions: IPermissions = {
     getUsers: {
         all: ['head-trainer'],
         delete: [],
