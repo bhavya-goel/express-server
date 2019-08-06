@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import { IConfig } from './config';
-import { errorHandlerMsg, routeNotFound, Database } from './libs';
+import { Database, errorHandlerMsg, routeNotFound } from './libs';
 import router from './router';
 export class Server {
    private app;
@@ -32,7 +32,7 @@ export class Server {
       const {config: { port, mongoUri}} = this;
       Database.open(mongoUri);
       this.app.listen(port, () => {
-         console.log('server running>>>>>>>>>\nport ::::::::::',port);
+         console.log('server running>>>>>>>>>\nport ::::::::::', port);
       });
       return this;
    }

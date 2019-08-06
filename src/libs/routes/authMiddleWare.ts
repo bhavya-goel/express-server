@@ -1,9 +1,10 @@
 import * as jwt from 'jsonwebtoken';
-import { configuration } from '../../config';
 import { hasPermissions } from '../../../extraTs/utils';
+import { configuration } from '../../config';
 export default (moduleName, permissionType) => (req, res, next) => {
     try {
-        const token = req.headers['authorization'];
+        const authorization = 'authorization';
+        const token = req.headers[authorization];
         const key = configuration.secretKey;
         const info = jwt.verify(token, key);
         const role = info.role;

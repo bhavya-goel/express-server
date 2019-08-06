@@ -2,9 +2,6 @@ const validation = {
     create: {
         id:
         {
-            in: ['body'],
-            required: true,
-            string: true,
             custom: (value) => {
                 console.log('Value', value);
                 throw {
@@ -12,48 +9,51 @@ const validation = {
                     message: 'Message',
                 };
             },
+            in: ['body'],
+            required: true,
+            string: true,
         },
         name: {
+            errorMessage: 'Name is required',
+            in: ['body'],
             regex: '',
             required: true,
-            in: ['body'],
-            errorMessage: 'Name is required',
         },
     },
     delete:
     {
         id: {
             errorMessage: 'Id is required',
-            required: true,
             in: ['params'],
+            required: true,
         },
     },
     get:
     {
         limit: {
             default: 10,
-            required: false,
-            number: true,
-            in: ['query'],
             errorMessage: 'Limit is invalid',
+            in: ['query'],
+            number: true,
+            required: false,
         },
         skip: {
             default: 0,
-            required: false,
-            number: true,
-            in: ['query'],
             errorMessage: 'Skip is invalid',
+            in: ['query'],
+            number: true,
+            required: false,
         },
     },
     update:
     {
         dataToUpdate: {
-            in: ['body'],
-            required: true,
-            isObject: true,
             custom: (dataToUpdate) => {
-        
+                // custom
             },
+            in: ['body'],
+            isObject: true,
+            required: true,
         },
         id: {
             in: ['body'],

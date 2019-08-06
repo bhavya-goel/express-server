@@ -1,9 +1,9 @@
-export interface Ipermissions {
-    getUsers: {
-        [index: string]: string[];
+export interface IPermissions {
+    [module: string]: {
+        [type: string]: string[];
     };
 }
-export interface Iusers {
+export interface IUsers {
     traineeEmail: string;
     reviewerEmail: string;
 }

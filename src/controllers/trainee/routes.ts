@@ -8,5 +8,5 @@ traineeRouter.route('/:id?')
                 .post(validationHandler(validation.create), traineeRoutes.create)
                 .put(validationHandler(validation.update), traineeRoutes.update)
                 .delete(validationHandler(validation.delete), traineeRoutes.delete);
-//traineeRouter.delete('/:id?', validationHandler(validation.delete), traineeRoutes.delete);
+// traineeRouter.delete('/:id?', validationHandler(validation.delete), traineeRoutes.delete);
 export default traineeRouter;
