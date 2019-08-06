@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import { IConfig } from './config';
-import { errorHandlerMsg, routeNotFound } from './libs/routes/index';
+import { errorHandlerMsg, routeNotFound } from './libs';
 import router from './router';
 export class Server {
    private app;
