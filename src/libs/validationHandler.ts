@@ -1,5 +1,5 @@
 const validationHandler = (config) => (req, res, next) => {
-    let keyValue;
+ let keyValue;
     Object.keys(config).forEach( (key) => {
         const {...index} = config[key];
         const { in : place} = index;
@@ -42,6 +42,7 @@ const validationHandler = (config) => (req, res, next) => {
         if ('number' in index) {
                 if (isNaN(Number(keyValue))) {
                     next(`${key} not a number`);
+
                 }
             }
         // checks if key object or not
