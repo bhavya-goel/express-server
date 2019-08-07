@@ -1,10 +1,10 @@
-import { Iusers } from '../interfaces';
+import { IUsers } from '../interfaces';
 import { validateEmail } from './helpers';
-export default function validateUsers(users: Iusers[]): void {
-    const validUser = users.filter( (value: Iusers): boolean => {
+export default function validateUsers(users: IUsers[]): void {
+    const validUser = users.filter( (value: IUsers): boolean => {
         return (validateEmail(value.traineeEmail) && validateEmail(value.reviewerEmail));
     });
-    const inValidUser = users.filter( (value: Iusers): boolean => {
+    const inValidUser = users.filter( (value: IUsers): boolean => {
         return !(validateEmail(value.traineeEmail) && validateEmail(value.reviewerEmail));
 
     });

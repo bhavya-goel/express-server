@@ -1,67 +1,60 @@
 const validationHandler = (config) => (req, res, next) => {
-    let key;
-        for (key in config){
-            for(let index in config[key]){
-                let { in : place} = config[key]
-                switch(index){
-                    // checks if key present or not
-                    case 'required':
-                        // checks if key in request
-                        if((key in req[place]) && req[place][key] != null){
-                            break;
-                        }
-                        // if required is false and no value passed then set default value
-                        else if(config[key][index] === false){
-                            Object.defineProperty(req[place],key,{
-                                value: config[key]['default']
-                            })
-                            break;
-                        }
-                        // if key not passed and no error message present
-                        else if(config[key]['errorMessage'] === undefined){
-                            next(`${key} required`)
-                        }
-                        // throw error if key not present
-                        next(config[key]['errorMessage'])
-                        break;
-                    // checks if key is alphanumeric or not
-                    case 'regex':
-                        let pattern = /^[a-zA-Z0-9]+$/
-                        if(pattern.test(req[place][key])){
-                            break;
-                        }
-                        else{
-                            next('enter a alphanumeric name')
-                            break;
-                        }
-                    // checks if key is string or not    
-                    case 'string':
-                            if((typeof(req[place][key]) === 'string')){
-                                break; 
-                            }
-                            next(`${key} not a string`)
-                            break;
-                    // checks if key is number or not
-                    case 'number':
-                            if(isNaN(Number(req.query[key]))){
-                                next(`${key} not a number`)
-                            }
-                            break;
-                    // checks if key object or not
-                    case 'isObject':
-                        if(typeof(req[place][key]) === 'object'){
-                            break;
-                        }
-                        next(`${key} not an object`)
-
-                        break;
-                    case 'custom':
-                        config[key].custom(req[place][key]);
-                        break;
+ let keyValue;
+    Object.keys(config).forEach( (key) => {
+        const {...index} = config[key];
+        const { in : place} = index;
+        // checks if key present or not
+        if ('required' in index) {
+            // checks if key in request
+            if ((key in req[place]) && req[place][key] !== undefined) {
+                keyValue = req[place][key];
+            }
+            // if required is false and no value passed then set default value
+            else if (index.required === false) {
+                Object.defineProperty(req[place], key, {
+                    value: index.default,
+                });
+                keyValue = req[place][key];
+            }
+            // if key not passed and no error message present
+            else if (index.errorMessage === undefined) {
+                next(`${key} required`);
+            }
+            // throw error if key not present
+            else {
+                next(index.errorMessage);
+            }
+        }
+        // checks if key is alphanumeric or not
+        if ('regex' in index) {
+            const pattern = /^[a-zA-Z0-9]+$/;
+            if (! pattern.test(keyValue)) {
+                next('enter a alphanumeric name');
+            }
+        }
+        // checks if key is string or not
+        if ('string' in index) {
+                if (typeof(keyValue) !== 'string') {
+                    next(`${key} not a string`);
+                }
+        }
+        // checks if key is number or not
+        if ('number' in index) {
+                if (isNaN(Number(keyValue))) {
+                    next(`${key} not a number`);
                 }
             }
-        }  
-    next()
+        // checks if key object or not
+        if ('isObject' in index) {
+            if (typeof(keyValue) !== 'object') {
+                next(`${key} not an object`);
+            }
+        }
+        if ('custom' in index) {
+            index.custom(keyValue);
+        }
+    });
+    next();
 };
 export default validationHandler;
 
