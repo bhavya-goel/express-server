@@ -53,6 +53,7 @@ const validationHandler = (config) => (req, res, next) => {
                             break;
                         }
                         next(`${key} not an object`)
+
                         break;
                     case 'custom':
                         config[key].custom(req[place][key]);
