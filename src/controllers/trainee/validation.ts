@@ -2,7 +2,7 @@ const validation = {
     create: {
         id:
         {
-            custom: (value) => {
+          custom: (value) => {
                 console.log('Value', value);
                 throw {
                     error: 'Error Occured',
@@ -54,6 +54,11 @@ const validation = {
             in: ['body'],
             isObject: true,
             required: true,
+        },
+        id: {
+            in: ['body'],
+            required: true,
+            string: true,
         },
         id: {
             in: ['body'],
