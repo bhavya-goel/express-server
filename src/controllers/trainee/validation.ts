@@ -60,11 +60,6 @@ const validation = {
             required: true,
             string: true,
         },
-        id: {
-            in: ['body'],
-            required: true,
-            string: true,
-        },
     },
 };
 export default validation;
