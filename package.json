@@ -7,7 +7,7 @@
     "start:extra": "babel-node extra",
     "start:extraTs": "tsc-watch --project . --onSuccess \" npm run nodemon\"",
     "start": "tsc-watch --project . --onSuccess \" npm run nodemon\"",
-    "nodemon": "nodemon ./dist/index.js",
+    "nodemon": "nodemon ./dist/src/index.js",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,6 +26,7 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "git": "^0.1.5",
+    "jsonwebtoken": "^8.5.1",
     "tslint": "^5.18.0"
   },
   "devDependencies": {
@@ -40,7 +41,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit":""
+      "pre-commit": ""
     }
   }
 }

@@ -31,7 +31,7 @@ export class Server {
    public run() {
       const {config: { port}} = this;
       this.app.listen(port, () => {
-         console.log('server running');
+         console.log('server running>>>>>>>>>\nport ::::::::::',port);
       });
       return this;
    }

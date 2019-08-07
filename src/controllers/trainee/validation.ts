@@ -2,63 +2,63 @@ const validation = {
     create: {
         id:
         {
+            in: ['body'],
             required: true,
             string: true,
-            in: ['body'],
-            custom: function(value) {
+            custom: (value) => {
                 console.log('Value', value);
                 throw {
                     error: 'Error Occured',
                     message: 'Message',
-                }
+                };
             },
         },
         name: {
+            regex: '',
             required: true,
-            regex: '', 
             in: ['body'],
-            errorMessage: 'Name is required', 
+            errorMessage: 'Name is required',
         },
     },
     delete:
     {
         id: {
+            errorMessage: 'Id is required',
             required: true,
-            errorMessage: 'Id is required', 
             in: ['params'],
         },
     },
-    get: 
+    get:
     {
-        skip: {
+        limit: {
+            default: 10,
             required: false,
-            default: 0,
             number: true,
             in: ['query'],
-            errorMessage: 'Skip is invalid', 
+            errorMessage: 'Limit is invalid',
         },
-        limit: {
+        skip: {
+            default: 0,
             required: false,
-            default: 10,
             number: true,
-            in: ['query'], 
-            errorMessage: 'Limit is invalid', 
+            in: ['query'],
+            errorMessage: 'Skip is invalid',
         },
     },
-    update: 
-    { 
-        id: { 
-            required: true,
-            string: true,
-            in:['body'], 
-        },
+    update:
+    {
         dataToUpdate: {
             in: ['body'],
             required: true,
             isObject: true,
-            custom: function(dataToUpdate) {
-
+            custom: (dataToUpdate) => {
+        
             },
+        },
+        id: {
+            in: ['body'],
+            required: true,
+            string: true,
         },
     },
 };

@@ -1,10 +1,10 @@
 import * as express from 'express';
+import { authMiddleWare, validationHandler } from '../../libs';
 import { traineeRoutes } from './Controller';
-import { validationHandler } from '../../libs';
 import { default as validation } from './validation';
 const traineeRouter = express.Router();
 traineeRouter.route('/')
-                .get(validationHandler(validation.get), traineeRoutes.get)
+                .get(validationHandler(validation.get), authMiddleWare('getUsers', 'read'), traineeRoutes.get)
                 .post(validationHandler(validation.create), traineeRoutes.create)
                 .put(validationHandler(validation.update), traineeRoutes.update);
                 // .delete(validationHandler(validation.delete), traineeRoutes.delete);
