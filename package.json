@@ -23,6 +23,7 @@
   "homepage": "https://github.com/bhavya-goel/express-server#readme",
   "dependencies": {
     "@types/mongoose": "^5.5.12",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
@@ -43,7 +44,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit":"npm run lint"
+      "pre-commit": "npm run lint"
     }
   }
 }

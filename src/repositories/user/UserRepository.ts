@@ -4,24 +4,16 @@ export default class UserRepository {
     constructor() {
         this.userModel = userModel;
     }
-    public get( query, projection, options) {
-        return this.userModel.find(query, projection, options).then((res) => {
-            console.log('\n\ndata fetched>>>>>>>>>>>.', res);
-        });
+    public get( query) {
+        return this.userModel.findOne(query).lean();
     }
     public create(data) {
-        return this.userModel.create(data).then((res) => {
-            console.log('\ndata added >>>>>>>>>.', res);
-        });
+        return this.userModel.create(data);
     }
     public delete(data) {
-        return this.userModel.deleteMany(data).then((res) => {
-            console.log('\ndata deleted >>>>>>>>>.', res);
-        });
+        return this.userModel.deleteMany(data);
     }
     public update(query, dataToUpdate) {
-        return this.userModel.updateMany(query, dataToUpdate, (err, res) => {
-            console.log('\ndata updated >>>>>>>>>.', res);
-        });
+        return this.userModel.updateMany(query, dataToUpdate);
     }
 }

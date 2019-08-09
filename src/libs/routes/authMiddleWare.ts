@@ -1,24 +1,36 @@
 import * as jwt from 'jsonwebtoken';
 import { hasPermissions } from '../../../extraTs/utils';
 import { configuration } from '../../config';
+import { UserRepository } from '../../repositories';
+const userRepository = new UserRepository();
 export default (moduleName, permissionType) => (req, res, next) => {
     try {
         const authorization = 'authorization';
         const token = req.headers[authorization];
         const key = configuration.secretKey;
         const info = jwt.verify(token, key);
-        const role = info.role;
-        if (hasPermissions(moduleName, role, permissionType)) {
-            next();
-        }
-        else {
-            next({
-                error: 'unauthorized access',
-                status: 403,
-            });
-        }
+        console.log(info);
+        userRepository.get({ id: info.id})
+        .then((user) => {
+            if (!user) {
+                return next({
+                    error: 'Authentication failed',
+                    status: 403,
+                });
+            }
+            if (hasPermissions(moduleName, user.role, permissionType)) {
+                req.user = user;
+                next();
+            }
+            else {
+                return next({
+                    error: 'unauthorized access',
+                    status: 403,
+                });
+            }
+        });
     } catch (err) {
-        next({
+        return next({
             error: 'Authentication failed',
             status: 403,
         });

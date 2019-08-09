@@ -1,31 +1,37 @@
+import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import * as jwt from 'jsonwebtoken';
+import { configuration } from '../../config';
+import { UserRepository } from '../../repositories';
+
+const userRepository = new UserRepository();
 class UserRoutes {
-    public get(request: Request, response: Response) {
-        response.send({
-            id: 1,
-            name: 'User1',
-        });
-    }
-    public create(request: Request, response: Response) {
-        response.send({
-            data: 'user added',
-            id: 1,
-            name: 'User1',
-        });
-    }
-    public update(request: Request, response: Response) {
-        response.send({
-            data: 'user updated',
-            id: 1,
-            name: 'user1',
-        });
-    }
-    public delete(request: Request, response: Response) {
-        response.send({
-            data: 'user deleted',
-            id: 1,
-            name: 'user',
-        });
-    }
+   public login(req, res, next) {
+      const { email, password} = req.body;
+      userRepository.get({ email})
+      .then((user) => {
+         if ( !user ) {
+            return next('User Not Found');
+         }
+         const { password: hashPassword} = user;
+         if ( !bcrypt.compareSync(password, hashPassword)) {
+            return next('password entered is wrong');
+         }
+         const token = jwt.sign(user, configuration.secretKey);
+         res.send({
+            data: {
+               token,
+            },
+            message: 'login successful',
+            status: 'ok',
+         });
+      })
+      .catch((err) => {
+         console.log('erorr', err);
+      });
+   }
+   public getUser(req, res) {
+      res.send(req.user);
+   }
 }
 export const userRoutes = new UserRoutes();
