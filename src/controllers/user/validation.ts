@@ -2,8 +2,12 @@ const validation = {
     create: {
         id:
         {
-          custom: (value) => {
+            custom: (value) => {
                 console.log('Value', value);
+                throw {
+                    error: 'Error Occured',
+                    message: 'Message',
+                };
             },
             in: ['body'],
             required: true,

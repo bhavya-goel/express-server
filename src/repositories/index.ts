@@ -1,1 +1,1 @@
-export { UserRepository } from './user';
+export { userModel, UserRepository } from './user';

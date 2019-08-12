@@ -17,10 +17,11 @@ class UserRoutes {
          if ( !bcrypt.compareSync(password, hashPassword)) {
             return next('password entered is wrong');
          }
-         const token = jwt.sign(user, configuration.secretKey);
+         const token = jwt.sign(user, configuration.secretKey, { expiresIn: '15m' });
          res.send({
             data: {
                token,
+               user,
             },
             message: 'login successful',
             status: 'ok',
@@ -30,8 +31,29 @@ class UserRoutes {
          console.log('erorr', err);
       });
    }
+   public getAllUsers(req, res) {
+      userRepository.get({}).then((user) => {
+         res.send(user);
+      });
+   }
    public getUser(req, res) {
       res.send(req.user);
+   }
+   public deleteUser(req, res) {
+      userRepository.delete({
+         _id: req.params.id,
+      }, {
+         userID: 'user',
+      }).then((user) => {
+         res.send(user);
+      });
+   }
+   public updateUser(req, res) {
+      userRepository.update({
+         _id: req.body.id,
+      }, req.body.dataToUpdate).then((user) => {
+         res.send(user);
+      });
    }
 }
 export const userRoutes = new UserRoutes();

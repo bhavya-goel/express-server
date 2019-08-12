@@ -1,7 +1,7 @@
 {
   "name": "task",
   "version": "1.0.0",
-  "description": "",
+  "description": "express-server",
   "main": "index.js",
   "scripts": {
     "start:extra": "babel-node extra",
@@ -29,7 +29,7 @@
     "express": "^4.17.1",
     "git": "^0.1.5",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.6.8",
+    "mongoose": "^5.6.9",
     "tslint": "^5.18.0"
   },
   "devDependencies": {

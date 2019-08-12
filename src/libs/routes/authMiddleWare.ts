@@ -18,8 +18,8 @@ export default (moduleName, permissionType) => (req, res, next) => {
                     status: 403,
                 });
             }
-            if (hasPermissions(moduleName, user.role, permissionType)) {
-                req.user = user;
+            if (hasPermissions(moduleName, info.role, permissionType)) {
+                req.user = info;
                 next();
             }
             else {
