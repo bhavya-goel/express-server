@@ -13,11 +13,11 @@ class UserRoutes {
          if ( !user ) {
             return next('User Not Found');
          }
-         const { password: hashPassword} = user;
+         const { password: hashPassword} = user[0];
          if ( !bcrypt.compareSync(password, hashPassword)) {
             return next('password entered is wrong');
          }
-         const token = jwt.sign(user, configuration.secretKey, { expiresIn: '15m' });
+         const token = jwt.sign(user[0], configuration.secretKey, { expiresIn: '15m' });
          res.send({
             data: {
                token,

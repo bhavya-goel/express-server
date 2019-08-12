@@ -8,10 +8,10 @@ export default function seedData() {
     const { password } = configuration;
     const hash = bcrypt.hashSync(password, salt);
     const user = {
-        email: 'head-trainer1@gmail.com',
-        name: 'head-trainer',
+        email: 'trainee@gmail.com',
+        name: 'trainee',
         password: hash,
-        role: 'head-trainer',
+        role: 'trainee',
     };
     userModel.countDocuments({
         deletedAt: { $exists: false },
