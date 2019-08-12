@@ -30,15 +30,13 @@ export default class VersionableRepository < D extends mongoose.Document, M exte
         });
 
     }
-    public get( options): Promise<D> {
+    public get( options) {
         const query = {
             ...options,
             deletedAt: { $exists: false },
             deletedBy: { $exists: false },
         };
-        return this.versionableModel.find(query).lean().then((res) => {
-            return res;
-        });
+        return this.versionableModel.find(query).lean();
     }
     public delete(options, userid): Promise<D> {
         const dataToUpdate = {
