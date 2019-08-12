@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { configuration } from '../config';
-import { UserRepository } from '../repositories';
+import { userModel, UserRepository } from '../repositories';
 const userRepository = new UserRepository();
 export default function seedData() {
     const saltCount = 10;
@@ -8,27 +8,22 @@ export default function seedData() {
     const { password } = configuration;
     const hash = bcrypt.hashSync(password, salt);
     const user = {
-    email: 'user1@gmail.com',
-    name: 'user1',
-    password: hash,
-    role: 'trainee',
+        email: 'head-trainer1@gmail.com',
+        name: 'head-trainer',
+        password: hash,
+        role: 'head-trainer',
     };
-    if (!userRepository.get({})) {
-        userRepository.create(user);
-    }
-    // .then((res) => {
-    //     userRepository.update({ name: 'user1'}, {email: 'user'}); })
-    // .then((res) => {
-    //     userRepository.get({
-    //         name: 'user1',
-    //     }, 'email', undefined);
-    // })
-    // .then((res) => {
-    //     userRepository.delete({email: 'user'});
-    // })
-    // .then((res) => {
-    //     userRepository.get({
-    //         name: 'user1',
-    //     }, 'email', undefined);
-    // });
+    userModel.countDocuments({
+        deletedAt: { $exists: false },
+        deletedBy: { $exists: false },
+    }, (err, count) => {
+        if ( count === 0 && !err) {
+            userRepository.create(user, {
+                userID: 'user',
+            });
+        }
+        else if (err) {
+            console.log(err);
+        }
+    });
 }

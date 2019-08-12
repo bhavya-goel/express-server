@@ -30,9 +30,11 @@ export class Server {
    }
    public run() {
       const {config: { port, mongoUri}} = this;
-      Database.open(mongoUri);
-      this.app.listen(port, () => {
-         console.log('server running>>>>>>>>>\nport ::::::::::', port);
+      Database.open(mongoUri)
+      .then(() => {
+         this.app.listen(port, () => {
+            console.log('server running>>>>>>>>>\nport ::::::::::', port);
+         });
       });
       return this;
    }
