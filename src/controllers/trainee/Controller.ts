@@ -3,7 +3,8 @@ import { UserRepository } from '../../repositories';
 const userRepository = new UserRepository();
 class TraineeRoutes {
     public get(request: Request, response: Response) {
-        userRepository.getAll({role: 'trainee'}, {password: 0})
+        const {skip , limit} = request.query;
+        userRepository.getAll({role: 'trainee'}, {password: 0}, { skip, limit})
         .then((result) => {
             response.send({
                 data: result,
