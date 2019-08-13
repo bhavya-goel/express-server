@@ -16,7 +16,7 @@ traineeRouter.route('/')
     )
     .put(
         validationHandler(validation.update),
-        authMiddleWare('getUsers', 'update'),
+        authMiddleWare('getUsers', 'write'),
         traineeRoutes.update,
     );
 traineeRouter.route('/:id')

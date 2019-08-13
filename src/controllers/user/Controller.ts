@@ -11,19 +11,24 @@ class UserRoutes {
       userRepository.get({ email})
       .then((user) => {
          if ( !user ) {
-            return next('User Not Found');
+            return next({
+               error: 'email not found',
+               message: 'Please sign up before login or provide correct email',
+               status: '400',
+            });
          }
-         const { password: hashPassword} = user[0];
+         const { password: hashPassword} = user;
          if ( !bcrypt.compareSync(password, hashPassword)) {
-            return next('password entered is wrong');
+            return next({
+               error: 'password not matched',
+               message: 'please provide correct pasword',
+               status: '400',
+            });
          }
-         const token = jwt.sign(user[0], configuration.secretKey, { expiresIn: '15m' });
+         const token = jwt.sign(user, configuration.secretKey, { expiresIn: '15m' });
          res.send({
-            data: {
-               token,
-               user,
-            },
-            message: 'login successful',
+            data: token,
+            message: 'Authorization Token',
             status: 'ok',
          });
       })
@@ -31,28 +36,11 @@ class UserRoutes {
          console.log('erorr', err);
       });
    }
-   public getAllUsers(req, res) {
-      userRepository.get({}).then((user) => {
-         res.send(user);
-      });
-   }
    public getUser(req, res) {
-      res.send(req.user);
-   }
-   public deleteUser(req, res) {
-      userRepository.delete({
-         _id: req.params.id,
-      }, {
-         userID: 'user',
-      }).then((user) => {
-         res.send(user);
-      });
-   }
-   public updateUser(req, res) {
-      userRepository.update({
-         _id: req.body.id,
-      }, req.body.dataToUpdate).then((user) => {
-         res.send(user);
+      res.send({
+         data: req.user,
+         message: 'ME',
+         status: 'OK',
       });
    }
 }

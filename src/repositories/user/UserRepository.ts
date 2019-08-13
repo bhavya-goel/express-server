@@ -7,11 +7,17 @@ export default class UserRepository extends VersionableRepository
     constructor() {
         super(userModel);
     }
-    public get( query) {
-        return super.get(query);
+    public getAll( query, options?) {
+        return super.getAll(query, options);
+    }
+    public get( query, options?) {
+        return super.get(query, options);
     }
     public create(data, userid) {
         return super.create(data, userid);
+    }
+    public createWithHash(data, userid) {
+        return super.createWithHash(data, userid);
     }
     public delete(query, userid) {
         return super.delete(query, userid);

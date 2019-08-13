@@ -1,22 +1,13 @@
 const validation = {
     create: {
-        id:
-        {
-            custom: (value) => {
-                console.log('Value', value);
-                throw {
-                    error: 'Error Occured',
-                    message: 'Message',
-                };
-            },
+        email: {
+            errorMessage: 'Email is required',
             in: ['body'],
             required: true,
-            string: true,
         },
-        name: {
-            errorMessage: 'Name is required',
+        password: {
+            errorMessage: 'Password is required',
             in: ['body'],
-            regex: '',
             required: true,
         },
     },

@@ -16,11 +16,12 @@ export default class UserSchema extends VersionableSchema {
                 type: String,
             },
             password: {
-                required: true,
+                required: false,
                 type: String,
             },
             role: {
-                required: true,
+                default: 'trainee',
+                required: false,
                 type: String,
             },
         };

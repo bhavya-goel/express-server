@@ -9,22 +9,23 @@ export default (moduleName, permissionType) => (req, res, next) => {
         const token = req.headers[authorization];
         const key = configuration.secretKey;
         const info = jwt.verify(token, key);
-        console.log(info);
-        userRepository.get({ id: info.id})
+        userRepository.get({ _id: info._id})
         .then((user) => {
             if (!user) {
                 return next({
                     error: 'Authentication failed',
+                    message: 'Token not found',
                     status: 403,
                 });
             }
-            if (hasPermissions(moduleName, info.role, permissionType)) {
-                req.user = info;
+            if (hasPermissions(moduleName, user.role, permissionType)) {
+                req.user = user;
                 next();
             }
             else {
                 return next({
                     error: 'unauthorized access',
+                    message: `${info.role} doesn't has ${permissionType} access`,
                     status: 403,
                 });
             }
@@ -32,6 +33,7 @@ export default (moduleName, permissionType) => (req, res, next) => {
     } catch (err) {
         return next({
             error: 'Authentication failed',
+            message: 'Token not found',
             status: 403,
         });
     }
