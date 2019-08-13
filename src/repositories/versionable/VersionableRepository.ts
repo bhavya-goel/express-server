@@ -79,21 +79,21 @@ export default class VersionableRepository < D extends mongoose.Document, M exte
             }
         });
     }
-    public get( query, projection?) {
+    public get( query, projection?, options?) {
         const queryNew = {
             ...query,
             deletedAt: { $exists: false },
             deletedBy: { $exists: false },
         };
-        return this.versionableModel.findOne(queryNew, projection).lean();
+        return this.versionableModel.findOne(queryNew, projection, options).lean();
     }
-    public getAll( options, projection?) {
-        const query = {
-            ...options,
+    public getAll( query, projection?, options?) {
+        const queryNew = {
+            ...query,
             deletedAt: { $exists: false },
             deletedBy: { $exists: false },
         };
-        return this.versionableModel.find(query, projection).lean();
+        return this.versionableModel.find(queryNew, projection, options).lean();
     }
     public async delete(options, userid): Promise<D> {
         const dataToUpdate = {
