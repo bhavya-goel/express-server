@@ -8,6 +8,7 @@ const validation = {
                     throw {
                         error: 'incorrect email',
                         message: 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed',
+                        status: 403,
                     };
                 }
             },
