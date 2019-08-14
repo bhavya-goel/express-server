@@ -35,6 +35,9 @@ export class Server {
          this.app.listen(port, () => {
             console.log('server running>>>>>>>>>\nport ::::::::::', port);
          });
+      })
+      .catch((err) => {
+         console.log(err);
       });
       return this;
    }

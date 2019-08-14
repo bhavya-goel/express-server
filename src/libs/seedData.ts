@@ -8,7 +8,7 @@ export default function seedData() {
     const { password } = configuration;
     const hash = bcrypt.hashSync(password, salt);
     const user = {
-        email: 'head.trainer@gmail.com',
+        email: 'head.trainer@successive.tech',
         name: 'headTrainer',
         password: hash,
         role: 'head-trainer',

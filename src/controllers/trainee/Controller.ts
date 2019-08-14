@@ -7,7 +7,10 @@ class TraineeRoutes {
         userRepository.getAll({role: 'trainee'}, {password: 0}, { skip, limit})
         .then((result) => {
             response.send({
-                data: result,
+                data: {
+                    count: result.length,
+                    records: result,
+                },
                 message: 'Successfully fetched trainees',
                 status: 'OK',
             });

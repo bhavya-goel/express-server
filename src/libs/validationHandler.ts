@@ -51,7 +51,12 @@ const validationHandler = (config) => (req, res, next) => {
             }
         }
         if ('custom' in index) {
-            index.custom(keyValue);
+            try {
+                index.custom(keyValue);
+            }
+            catch (error) {
+                next(error);
+            }
         }
     });
     next();
