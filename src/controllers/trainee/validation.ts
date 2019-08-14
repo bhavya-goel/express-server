@@ -1,6 +1,16 @@
+import { validateEmail } from '../../../extraTs/utils/helpers';
+
 const validation = {
     create: {
         email: {
+            custom: (email: string) => {
+                if (!validateEmail(email)) {
+                    throw {
+                        error: 'incorrect email',
+                        message: 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed',
+                    };
+                }
+            },
             errorMessage: 'Email is required',
             in: ['body'],
             required: true,
