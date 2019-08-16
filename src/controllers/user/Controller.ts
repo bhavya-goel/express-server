@@ -5,7 +5,11 @@ import { configuration } from '../../config';
 import { UserRepository } from '../../repositories';
 
 const userRepository = new UserRepository();
+
 class UserRoutes {
+
+// function which checks email and password for login
+
    public login(req, res, next) {
       const { email, password} = req.body;
       userRepository.get({ email})
@@ -41,6 +45,9 @@ class UserRoutes {
          });
       });
    }
+
+// function which shows current user details
+
    public getUser(req, res) {
       res.send({
          data: req.user,
@@ -49,4 +56,5 @@ class UserRoutes {
       });
    }
 }
+
 export const userRoutes = new UserRoutes();
