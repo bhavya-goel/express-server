@@ -47,10 +47,17 @@ class TraineeRoutes {
 
 // function to update trainee
     public update(request: Request, response: Response, next) {
+        const allowed = ['name', 'email', 'password'];
+        const data = Object.keys(request.body.dataToUpdate)
+        .filter((key) => allowed.includes(key))
+        .reduce((obj, key) => {
+            obj[key] = request.body.dataToUpdate[key];
+            return obj;
+        }, {});
         userRepository.update({
             _id: request.body.id,
         }, {
-            ...request.body.dataToUpdate,
+            ...data,
             userID: request.user._id,
         })
         .then(() => {
