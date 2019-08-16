@@ -74,7 +74,6 @@ const validationHandler = (config) => (req, res, next) => {
 
 export default validationHandler;
 
-
 // Alternate way ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 // const validationHandler = (config) => (req, res, next) => {
