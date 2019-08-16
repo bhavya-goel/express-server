@@ -59,6 +59,7 @@ export default class VersionableRepository
                 updatedAt: Date.now(),
                 updatedBy: options.userID,
             };
+            console.log(dataToUpdate);
             const result = await this.get(query);
             if (result) {
                 const id = mongoose.Types.ObjectId();
@@ -68,7 +69,10 @@ export default class VersionableRepository
                     _id: id,
                     ...dataToUpdate,
                 };
-                await this.versionableModel.create(data);
+                const create = await this.versionableModel.create(data);
+                if (!create) {
+                    reject ('user update unsuccessful');
+                }
                 const final = this.versionableModel.updateOne({
                         _id: oldId,
                         }, {
@@ -79,7 +83,7 @@ export default class VersionableRepository
                     resolve(final);
                 }
                 else {
-                    reject(final);
+                    reject('user update unsuccessful');
                 }
             }
             else {
