@@ -16,18 +16,21 @@ const validation = {
             in: ['body'],
             required: true,
         },
+
         name: {
             errorMessage: 'Name is required',
             in: ['body'],
             regex: '',
             required: true,
         },
+
         password: {
             errorMessage: 'Password is required',
             in: ['body'],
             required: true,
         },
     },
+
     delete:
     {
         id: {
@@ -36,6 +39,7 @@ const validation = {
             required: true,
         },
     },
+
     get:
     {
         limit: {
@@ -45,6 +49,7 @@ const validation = {
             number: true,
             required: false,
         },
+
         skip: {
             default: 0,
             errorMessage: 'Skip is invalid',
@@ -53,6 +58,7 @@ const validation = {
             required: false,
         },
     },
+
     update:
     {
         dataToUpdate: {
@@ -63,6 +69,7 @@ const validation = {
             isObject: true,
             required: true,
         },
+
         id: {
             in: ['body'],
             required: true,
@@ -70,4 +77,5 @@ const validation = {
         },
     },
 };
+
 export default validation;

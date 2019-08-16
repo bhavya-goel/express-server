@@ -1,7 +1,10 @@
 import * as mongoose from 'mongoose';
 import seedData from './seedData';
+
 class Database {
+
     public static open(mongoUri) {
+
     return new Promise ((resolve, reject) => {
         mongoose.connect(mongoUri, { useNewUrlParser: true }, (err) => {
             if (err) {

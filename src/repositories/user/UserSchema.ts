@@ -1,6 +1,7 @@
 import { VersionableSchema } from '../versionable';
 export default class UserSchema extends VersionableSchema {
     public userSchema;
+
     constructor(options?) {
         const userSchema = {
             _id: {

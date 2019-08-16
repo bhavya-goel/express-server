@@ -6,4 +6,5 @@ const errorHandlerMsg = (errorMessage, request, response, next) => {
   timestamp: new Date(),
   });
 };
+
 export default errorHandlerMsg;

@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+
 export default class VersionableSchema extends mongoose.Schema {
     public versionSchema;
     constructor(options, collection?) {
