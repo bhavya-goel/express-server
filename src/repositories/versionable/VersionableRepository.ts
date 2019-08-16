@@ -59,7 +59,6 @@ export default class VersionableRepository
                 updatedAt: Date.now(),
                 updatedBy: options.userID,
             };
-            console.log(dataToUpdate);
             const result = await this.get(query);
             if (result) {
                 const id = mongoose.Types.ObjectId();
