@@ -51,7 +51,7 @@ class UserRoutes {
    public getUser(req, res) {
       res.send({
          data: req.user,
-         message: 'ME',
+         message: 'User details fetched',
          status: 'OK',
       });
    }
