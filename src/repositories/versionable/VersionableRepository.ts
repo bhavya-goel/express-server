@@ -47,8 +47,8 @@ export default class VersionableRepository < D extends mongoose.Document, M exte
         return new Promise(async (resolve, reject) => {
             if (options.password) {
                 const saltCount = 10;
-            const salt = bcrypt.genSaltSync(saltCount);
-            options.password = bcrypt.hashSync(options.password, salt);
+                const salt = bcrypt.genSaltSync(saltCount);
+                options.password = bcrypt.hashSync(options.password, salt);
             }
             const dataToUpdate = {
                 ...options,

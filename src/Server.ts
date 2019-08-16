@@ -37,8 +37,8 @@ export class Server {
          });
       })
       .catch((err) => {
-         console.log(err)
-      })
+         console.log(err);
+      });
       return this;
    }
 }
