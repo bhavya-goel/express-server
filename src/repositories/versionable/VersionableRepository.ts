@@ -1,6 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import * as mongoose from 'mongoose';
-export default class VersionableRepository < D extends mongoose.Document, M extends mongoose.Model<D>> {
+export default class VersionableRepository
+< D extends mongoose.Document, M extends mongoose.Model<D>> {
+
     private versionableModel: M;
     constructor(model) {
         this.versionableModel = model;
@@ -22,6 +24,7 @@ export default class VersionableRepository < D extends mongoose.Document, M exte
             }});
         });
     }
+
     public createWithHash(options, userid): Promise<D> {
         const saltCount = 10;
         const salt = bcrypt.genSaltSync(saltCount);
@@ -43,6 +46,7 @@ export default class VersionableRepository < D extends mongoose.Document, M exte
             }});
         });
     }
+
     public update(query, options): Promise<D> {
         return new Promise(async (resolve, reject) => {
             if (options.password) {
@@ -84,6 +88,7 @@ export default class VersionableRepository < D extends mongoose.Document, M exte
             }
         });
     }
+
     public get( query, projection?, options?) {
         const queryNew = {
             ...query,
@@ -92,6 +97,7 @@ export default class VersionableRepository < D extends mongoose.Document, M exte
         };
         return this.versionableModel.findOne(queryNew, projection, options).lean();
     }
+
     public getAll( query, projection?, options?) {
         const queryNew = {
             ...query,
@@ -100,6 +106,7 @@ export default class VersionableRepository < D extends mongoose.Document, M exte
         };
         return this.versionableModel.find(queryNew, projection, options).lean();
     }
+
     public async delete(options, userid): Promise<D> {
         const dataToUpdate = {
             deletedAt: Date.now(),

@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import { UserRepository } from '../../repositories';
+
 const userRepository = new UserRepository();
+
 class TraineeRoutes {
+// Function to fetch all trainees
     public get(request: Request, response: Response) {
         const {skip , limit} = request.query;
         userRepository.getAll({role: 'trainee'}, {password: 0}, { skip, limit})
@@ -16,6 +19,8 @@ class TraineeRoutes {
             });
         });
     }
+
+// function to create new trainee
     public create(request: Request, response: Response, next) {
         const { email, password, name } = request.body;
         const data = {
@@ -39,6 +44,8 @@ class TraineeRoutes {
             });
         });
     }
+
+// function to update trainee
     public update(request: Request, response: Response, next) {
         userRepository.update({
             _id: request.body.id,
@@ -63,6 +70,8 @@ class TraineeRoutes {
             });
         });
     }
+
+// function to delete trainee
     public delete(request: Request, response: Response, next) {
         userRepository.delete({_id: request.params.id}, request.user._id)
         .then((res) => {
@@ -85,4 +94,5 @@ class TraineeRoutes {
         });
     }
 }
+
 export const traineeRoutes = new TraineeRoutes();
