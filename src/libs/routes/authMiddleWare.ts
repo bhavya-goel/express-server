@@ -9,7 +9,7 @@ export default (moduleName, permissionType) => (req, res, next) => {
         const token = req.headers[authorization];
         const key = configuration.secretKey;
         const info = jwt.verify(token, key);
-        userRepository.get({ _id: info._id})
+        userRepository.get({ _id: info._id}, { password : 0})
         .then((user) => {
             if (!user) {
                 return next({
