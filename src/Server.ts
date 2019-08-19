@@ -1,9 +1,10 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
+import * as swaggerUi from 'swagger-ui-express';
 import { IConfig } from './config';
 import { Database, errorHandlerMsg, routeNotFound } from './libs';
 import router from './router';
-
+import * as swaggerDocument from './swagger.json';
 export class Server {
 
    private app;
@@ -29,6 +30,7 @@ export class Server {
          res.send('I am OK');
       });
       app.use('/api', router);
+      app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
       app.use(routeNotFound);
       app.use(errorHandlerMsg);
       this.run();
