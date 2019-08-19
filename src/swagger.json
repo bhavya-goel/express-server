@@ -97,7 +97,12 @@
                 "$ref": "#/definitions/notFound"
               }
             }
-          }
+          },
+          "security": [
+            {
+              "Auth": []
+            }
+          ]
         },
         "put": {
           "tags": [
@@ -135,7 +140,12 @@
                 "$ref": "#/definitions/notFound"
               }
             }
-          }
+          },
+          "security": [
+            {
+              "Auth": []
+            }
+          ]
         }
       },
       "/trainee/{id}": {
@@ -176,7 +186,12 @@
                 "$ref": "#/definitions/notFound"
               }
             }
-          }
+          },
+          "security": [
+            {
+              "Auth": []
+            }
+          ]
         }
       },
       "/user/login/": {
@@ -247,7 +262,12 @@
                 "$ref": "#/definitions/notFound"
               }
             }
-          }
+          },
+          "security": [
+            {
+              "Auth": []
+            }
+          ]
         }
       }
     },
