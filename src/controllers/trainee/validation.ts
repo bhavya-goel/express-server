@@ -70,7 +70,7 @@ const validation = {
             required: true,
         },
 
-        id: {
+      id: {
             in: ['body'],
             required: true,
             string: true,
