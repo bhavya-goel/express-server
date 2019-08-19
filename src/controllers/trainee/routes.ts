@@ -8,7 +8,7 @@ const traineeRouter = express.Router();
 traineeRouter.route('/')
     .get(
         validationHandler(validation.get),
-        authMiddleWare('getUsers', 'read'),
+        authMiddleWare('getUsers', 'write'),
         traineeRoutes.get,
     )
     .post(
