@@ -33,4 +33,8 @@ export default class UserRepository extends VersionableRepository
     public update(query, dataToUpdate) {
         return super.update(query, dataToUpdate);
     }
+
+    public count() {
+        return super.count();
+    }
 }

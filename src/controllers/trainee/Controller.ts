@@ -5,13 +5,14 @@ const userRepository = new UserRepository();
 
 class TraineeRoutes {
 // Function to fetch all trainees
-    public get(request: Request, response: Response) {
+    public async get(request: Request, response: Response) {
         const {skip , limit} = request.query;
+        const count = await userRepository.count();
         userRepository.getAll({role: 'trainee'}, {password: 0}, { skip, limit})
         .then((result) => {
             response.send({
                 data: {
-                    count: result.length,
+                    count,
                     records: result,
                 },
                 message: 'Successfully fetched trainees',
