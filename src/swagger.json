@@ -126,7 +126,10 @@
           ],
           "responses": {
             "200": {
-              "description": "successful operation"
+              "description": "successful operation",
+              "schema": {
+                "$ref": "#/definitions/updateResponse"
+              }
             },
             "403": {
               "description": "unauthorised",
@@ -482,6 +485,27 @@
           "message": {
             "type": "string",
             "example": "Authorization Token"
+          },
+          "status": {
+            "type": "string",
+            "example": "ok"
+          }
+        }
+      },
+      "updateResponse": {
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "5d567e86b488c539c1266765"
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "Trainee Updated Successfully"
           },
           "status": {
             "type": "string",
