@@ -123,4 +123,16 @@ export default class VersionableRepository
             return res;
         });
     }
+
+    public async count() {
+        let value;
+        await this.versionableModel.countDocuments({
+        deletedAt: { $exists: false },
+        deletedBy: { $exists: false },
+        }, (err, count) => {
+            value = count;
+        });
+        return value;
+    }
+
 }
