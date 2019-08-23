@@ -129,6 +129,7 @@ export default class VersionableRepository
         await this.versionableModel.countDocuments({
         deletedAt: { $exists: false },
         deletedBy: { $exists: false },
+        role: 'trainee',
         }, (err, count) => {
             value = count;
         });
