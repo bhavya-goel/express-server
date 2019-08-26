@@ -86,7 +86,6 @@ export default class VersionableRepository
                 }
             }
             else {
-                console.log('user not found');
                 reject(result);
             }
         });
