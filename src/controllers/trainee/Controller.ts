@@ -56,10 +56,10 @@ class TraineeRoutes {
             return obj;
         }, {});
         userRepository.update({
-            _id: request.body.id,
+            originalID: request.body.id,
         }, {
             ...data,
-            userID: request.user._id,
+            userID: request.user.originalID,
         })
         .then(() => {
             response.send({
@@ -81,7 +81,7 @@ class TraineeRoutes {
 
 // function to delete trainee
     public delete(request: Request, response: Response, next) {
-        userRepository.delete({_id: request.params.id}, request.user._id)
+        userRepository.delete({originalID: request.params.id}, request.user.originalID)
         .then((res) => {
             if (res) {
                 response.send({
