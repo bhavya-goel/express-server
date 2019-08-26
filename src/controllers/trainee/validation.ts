@@ -63,7 +63,13 @@ const validation = {
     {
         dataToUpdate: {
             custom: (dataToUpdate) => {
-                // custom
+                if (!validateEmail(dataToUpdate.email)) {
+                    throw {
+                        error: 'incorrect email',
+                        message: 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed',
+                        status: 403,
+                    };
+                }
             },
             in: ['body'],
             isObject: true,
