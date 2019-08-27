@@ -8,7 +8,13 @@ export default class VersionableRepository
         this.versionableModel = model;
     }
 
-    public create(option, userid): Promise<D> {
+    public async checkUnique(email: string) {
+        // to check that email field is unique
+        const result = await this.getAll({email, role: 'trainee'}, 'email');
+        return ( result.length > 0 );
+    }
+
+    public async create(option, userid): Promise<D> {
         const id = mongoose.Types.ObjectId();
         const data = {
             ...option,
@@ -17,15 +23,22 @@ export default class VersionableRepository
             createdBy: userid,
             originalID: id,
         };
-        return this.versionableModel.create(data).then((res) => {
-            return res.toObject({transform: (doc, ret) => {
-                delete ret.password;
-                return ret;
-            }});
-        });
+        const count = await this.checkUnique(data.email);
+        if (count) {
+            throw new Error('email exists');
+        }
+        else {
+            return this.versionableModel.create(data).then((res) => {
+                return res.toObject({transform: (doc, ret) => {
+                    delete ret.password;
+                    return ret;
+                }});
+            });
+        }
+
     }
 
-    public createWithHash(options, userid): Promise<D> {
+    public async createWithHash(options, userid): Promise<D> {
         const saltCount = 10;
         const salt = bcrypt.genSaltSync(saltCount);
         const password = options.password;
@@ -39,6 +52,10 @@ export default class VersionableRepository
             originalID: id,
             password: hash,
         };
+        const count = await this.checkUnique(data.email);
+        if (count) {
+            throw new Error('email exists');
+        }
         return this.versionableModel.create(data).then((res) => {
             return res.toObject({transform: (doc, ret) => {
                 delete ret.password;
@@ -68,10 +85,20 @@ export default class VersionableRepository
                     _id: id,
                     ...dataToUpdate,
                 };
+
+                // to check if email distinct or not
+                const count = await (('email' in dataToUpdate) && (this.checkUnique(data.email)));
+                if (count) {
+                    return reject('email exists');
+                }
+
+                // create an updated copy
                 const create = await this.versionableModel.create(data);
                 if (!create) {
-                    reject ('user update unsuccessful');
+                    return reject ('user update unsuccessful');
                 }
+
+                // delete previous copy
                 const final = this.versionableModel.updateOne({
                         _id: oldId,
                         }, {
@@ -79,14 +106,14 @@ export default class VersionableRepository
                             deletedBy: options.userID,
                         });
                 if ( final ) {
-                    resolve(final);
+                    return resolve(final);
                 }
                 else {
-                    reject('user update unsuccessful');
+                    return reject('user update unsuccessful');
                 }
             }
             else {
-                reject(result);
+                return reject(result);
             }
         });
     }
