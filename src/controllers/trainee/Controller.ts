@@ -37,9 +37,9 @@ class TraineeRoutes {
                 status: 'ok',
             });
         })
-        .catch(() => {
+        .catch((err) => {
             next({
-                error: 'unauthorized access',
+                error: err || 'unauthorized access',
                 message: 'Token not found',
                 status: 403,
             });
@@ -70,9 +70,9 @@ class TraineeRoutes {
                 status: 'OK',
             });
         })
-        .catch(() => {
+        .catch((err) => {
             next({
-            error: 'Trainee not found',
+            error: err || 'Trainee not found',
             message: 'Enter correct ID',
             status: 403,
             });
