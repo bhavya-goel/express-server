@@ -15,7 +15,7 @@ export default (moduleName, permissionType) => (req, res, next) => {
         const info = jwt.verify(token, key);
 
         // to validate the token
-        userRepository.get({ _id: info._id}, { password : 0})
+        userRepository.get({ originalID: info.originalID}, { password : 0})
         .then((user) => {
             if (!user) {
                 return next({
