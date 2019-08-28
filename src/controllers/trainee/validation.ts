@@ -69,7 +69,6 @@ const validation = {
             isObject: true,
             required: true,
         },
-
         id: {
             in: ['body'],
             required: true,
