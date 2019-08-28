@@ -73,7 +73,7 @@ class TraineeRoutes {
         .catch((err) => {
             next({
             error: 'Bad Request',
-            message: err.message || 'update unsuccessful',
+            message: err || 'update unsuccessful',
             status: 400,
             });
         });
