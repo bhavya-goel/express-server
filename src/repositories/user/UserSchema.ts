@@ -1,9 +1,12 @@
-import * as mongoose from 'mongoose';
-export default class UserSchema extends mongoose.Schema {
+import { VersionableSchema } from '../versionable';
+export default class UserSchema extends VersionableSchema {
     public userSchema;
+
     constructor(options?) {
-        console.log('inside schema');
         const userSchema = {
+            _id: {
+                type: String,
+            },
             email: {
                 required: true,
                 type: String,
@@ -13,11 +16,12 @@ export default class UserSchema extends mongoose.Schema {
                 type: String,
             },
             password: {
-                required: true,
+                required: false,
                 type: String,
             },
             role: {
-                required: true,
+                default: 'trainee',
+                required: false,
                 type: String,
             },
         };

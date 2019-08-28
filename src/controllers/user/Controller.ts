@@ -5,33 +5,56 @@ import { configuration } from '../../config';
 import { UserRepository } from '../../repositories';
 
 const userRepository = new UserRepository();
+
 class UserRoutes {
+
+// function which checks email and password for login
+
    public login(req, res, next) {
       const { email, password} = req.body;
       userRepository.get({ email})
       .then((user) => {
          if ( !user ) {
-            return next('User Not Found');
+            return next({
+               error: 'email not found',
+               message: 'Please sign up before login or provide correct email',
+               status: '400',
+            });
          }
          const { password: hashPassword} = user;
          if ( !bcrypt.compareSync(password, hashPassword)) {
-            return next('password entered is wrong');
+            return next({
+               error: 'password not matched',
+               message: 'please provide correct pasword',
+               status: '400',
+            });
          }
-         const token = jwt.sign(user, configuration.secretKey);
+         const token = jwt.sign(user, configuration.secretKey, { expiresIn: '15m' });
          res.send({
-            data: {
-               token,
-            },
-            message: 'login successful',
+            data: token,
+            message: 'Authorization Token',
             status: 'ok',
          });
       })
       .catch((err) => {
          console.log('erorr', err);
+         return next({
+            error: 'email not found',
+            message: 'Please sign up before login or provide correct email',
+            status: '400',
+         });
       });
    }
+
+// function which shows current user details
+
    public getUser(req, res) {
-      res.send(req.user);
+      res.send({
+         data: req.user,
+         message: 'User details fetched',
+         status: 'OK',
+      });
    }
 }
+
 export const userRoutes = new UserRoutes();

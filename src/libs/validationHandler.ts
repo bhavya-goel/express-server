@@ -1,8 +1,11 @@
 const validationHandler = (config) => (req, res, next) => {
     let keyValue;
+
     Object.keys(config).forEach( (key) => {
+
         const {...index} = config[key];
         const { in : place} = index;
+
         // checks if key present or not
         if ('required' in index) {
             // checks if key in request
@@ -25,6 +28,7 @@ const validationHandler = (config) => (req, res, next) => {
                 next(index.errorMessage);
             }
         }
+
         // checks if key is alphanumeric or not
         if ('regex' in index) {
             const pattern = /^[a-zA-Z0-9]+$/;
@@ -32,28 +36,40 @@ const validationHandler = (config) => (req, res, next) => {
                 next('enter a alphanumeric name');
             }
         }
+
         // checks if key is string or not
         if ('string' in index) {
                 if (typeof(keyValue) !== 'string') {
                     next(`${key} not a string`);
                 }
         }
+
         // checks if key is number or not
         if ('number' in index) {
                 if (isNaN(Number(keyValue))) {
                     next(`${key} not a number`);
                 }
             }
+
         // checks if key object or not
         if ('isObject' in index) {
             if (typeof(keyValue) !== 'object') {
                 next(`${key} not an object`);
             }
         }
+
+        // runs custom function at last
         if ('custom' in index) {
-            index.custom(keyValue);
+            try {
+                index.custom(keyValue);
+            }
+            catch (error) {
+                next(error);
+            }
         }
     });
+
     next();
 };
+
 export default validationHandler;

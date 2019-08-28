@@ -4,23 +4,16 @@ const validation = {
     create: {
         email: {
             custom: (email: string) => {
-                if (!validateEmail(email)) {
-                    throw {
-                        error: 'incorrect email',
-                        message: 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed',
-                        status: 403,
-                    };
-                }
+            if (!validateEmail(email)) {
+                throw {
+                    error: 'incorrect email',
+                    message: 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed',
+                    status: 403,
+                };
+            }
             },
             errorMessage: 'Email is required',
             in: ['body'],
-            required: true,
-        },
-
-        name: {
-            errorMessage: 'Name is required',
-            in: ['body'],
-            regex: '',
             required: true,
         },
 
@@ -70,7 +63,7 @@ const validation = {
             required: true,
         },
 
-      id: {
+        id: {
             in: ['body'],
             required: true,
             string: true,
