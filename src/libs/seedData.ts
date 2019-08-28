@@ -20,11 +20,7 @@ export default function seedData() {
     };
 
     // one time seeding
-    userModel.countDocuments({
-        deletedAt: { $exists: false },
-        deletedBy: { $exists: false },
-        role: 'head-trainer',
-        }, (err, count) => {
+    userModel.countDocuments({}, (err, count) => {
         if ( count === 0 && !err) {
             userRepository.create(user, 'admin');
         }
