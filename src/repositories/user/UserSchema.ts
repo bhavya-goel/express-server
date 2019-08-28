@@ -8,10 +8,18 @@ export default class UserSchema extends mongoose.Schema {
                 required: true,
                 type: String,
             },
-                name: {
-                    required: true,
-                    type: String,
-                },
+            name: {
+                required: true,
+                type: String,
+            },
+            password: {
+                required: true,
+                type: String,
+            },
+            role: {
+                required: true,
+                type: String,
+            },
         };
         super(userSchema, options);
     }
