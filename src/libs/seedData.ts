@@ -23,6 +23,7 @@ export default function seedData() {
     userModel.countDocuments({
         deletedAt: { $exists: false },
         deletedBy: { $exists: false },
+        role: 'head-trainer',
         }, (err, count) => {
         if ( count === 0 && !err) {
             userRepository.create(user, 'admin');
