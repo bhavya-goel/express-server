@@ -10,7 +10,7 @@ export default class VersionableRepository
 
     public async checkUnique(email: string) {
         // to check that email field is unique
-        const result = await this.getAll({email, role: 'trainee'}, 'email');
+        const result = await this.getAll({email}, 'email');
         return ( result.length > 0 );
     }
 
@@ -25,7 +25,7 @@ export default class VersionableRepository
         };
         const count = await this.checkUnique(data.email);
         if (count) {
-            throw 'email exists';
+            throw new Error('email exists');
         }
         else {
             return this.versionableModel.create(data).then((res) => {
@@ -54,7 +54,7 @@ export default class VersionableRepository
         };
         const count = await this.checkUnique(data.email);
         if (count) {
-            throw 'email exists';
+            throw new Error('email exists');
         }
         return this.versionableModel.create(data).then((res) => {
             return res.toObject({transform: (doc, ret) => {
