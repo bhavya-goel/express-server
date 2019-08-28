@@ -65,21 +65,16 @@ const validation = {
     {
         dataToUpdate: {
             custom: (dataToUpdate) => {
-                if (dataToUpdate.name) {
-                    if (typeof(dataToUpdate.name) !== 'string') {
-                        throw new Error('name must be string');
-                    }
-                    else {
-                        const pattern = /^[a-zA-Z0-9]+$/;
-                        if (! pattern.test(dataToUpdate.name)) {
-                            throw new Error('enter a alphanumeric name');
-                        }
+                if ('name' in dataToUpdate) {
+                    const pattern = /^[a-zA-Z0-9]+$/;
+                    if (! pattern.test(dataToUpdate.name)) {
+                        throw new Error('enter a alphanumeric name');
                     }
                 }
-                if (dataToUpdate.password && dataToUpdate.password === '') {
+                if ('password' in dataToUpdate && dataToUpdate.password === '') {
                     throw new Error('password cannot be empty');
                 }
-                if (dataToUpdate.email && !validateEmail(dataToUpdate.email)) {
+                if ('email' in dataToUpdate && !validateEmail(dataToUpdate.email)) {
                     throw new Error('Please enter email in format ( \
                         abc@successive.tech )special characters ( . -)allowed');
                 }
