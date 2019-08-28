@@ -13,8 +13,8 @@ userRouter.route('/login')
 
 userRouter.route('/me')
                 .get(
-                    validationHandler(validation.get),
                     authMiddleWare('getUsers', 'read'),
+                    validationHandler(validation.get),
                     userRoutes.getUser,
                 );
 

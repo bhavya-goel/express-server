@@ -46,6 +46,7 @@ export class Server {
       })
       .catch((err) => {
          console.log(err);
+         return err
       });
       return this;
    }

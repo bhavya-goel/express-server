@@ -1,7 +1,7 @@
 export const routeNotFound = (request, response, next) => {
     next({
-        error: 'Not Found',
-        message: 'error',
+        error: 'Client Error',
+        message: 'Not Found',
         status: 404,
     });
 };
