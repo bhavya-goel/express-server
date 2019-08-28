@@ -90,7 +90,7 @@ const validationHandler = (config) => (req, res, next) => {
             catch (err) {
                 next({
                     error: 'Bad Request',
-                    message: err,
+                    message: err.message,
                     status: 400,
                 });
             }

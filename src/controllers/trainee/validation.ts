@@ -5,7 +5,8 @@ const validation = {
         email: {
             custom: (email: string) => {
                 if (!validateEmail(email)) {
-                    throw 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed';
+                    throw new Error('Please enter email in format \
+                    ( abc@successive.tech )special characters ( . -)allowed');
                 }
             },
             errorMessage: 'Email is required',
@@ -21,6 +22,11 @@ const validation = {
         },
 
         password: {
+            custom: (password: string) => {
+                if (password === '') {
+                    throw new Error('password cannot be empty');
+                }
+            },
             errorMessage: 'Password is required',
             in: ['body'],
             required: true,
@@ -59,12 +65,23 @@ const validation = {
     {
         dataToUpdate: {
             custom: (dataToUpdate) => {
+                if (dataToUpdate.name) {
+                    if (typeof(dataToUpdate.name) !== 'string') {
+                        throw new Error('name must be string');
+                    }
+                    else {
+                        const pattern = /^[a-zA-Z0-9]+$/;
+                        if (! pattern.test(dataToUpdate.name)) {
+                            throw new Error('enter a alphanumeric name');
+                        }
+                    }
+                }
+                if (dataToUpdate.password && dataToUpdate.password === '') {
+                    throw new Error('password cannot be empty');
+                }
                 if (dataToUpdate.email && !validateEmail(dataToUpdate.email)) {
-                    throw {
-                        error: 'incorrect email',
-                        message: 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed',
-                        status: 400,
-                    };
+                    throw new Error('Please enter email in format ( \
+                        abc@successive.tech )special characters ( . -)allowed');
                 }
             },
             in: ['body'],
