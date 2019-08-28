@@ -25,7 +25,7 @@ export default class VersionableRepository
         };
         const count = await this.checkUnique(data.email);
         if (count) {
-            throw new Error('email exists');
+            throw 'email exists';
         }
         else {
             return this.versionableModel.create(data).then((res) => {
@@ -54,7 +54,7 @@ export default class VersionableRepository
         };
         const count = await this.checkUnique(data.email);
         if (count) {
-            throw new Error('email exists');
+            throw 'email exists';
         }
         return this.versionableModel.create(data).then((res) => {
             return res.toObject({transform: (doc, ret) => {
@@ -113,7 +113,7 @@ export default class VersionableRepository
                 }
             }
             else {
-                return reject(result);
+                return reject('ID not found');
             }
         });
     }

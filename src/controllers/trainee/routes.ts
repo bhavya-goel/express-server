@@ -7,25 +7,25 @@ const traineeRouter = express.Router();
 
 traineeRouter.route('/')
     .get(
-        validationHandler(validation.get),
         authMiddleWare('getUsers', 'write'),
+        validationHandler(validation.get),
         traineeRoutes.get,
     )
     .post(
-        validationHandler(validation.create),
         authMiddleWare('getUsers', 'write'),
+        validationHandler(validation.create),
         traineeRoutes.create,
     )
     .put(
-        validationHandler(validation.update),
         authMiddleWare('getUsers', 'write'),
+        validationHandler(validation.update),
         traineeRoutes.update,
     );
 
 traineeRouter.route('/:id')
     .delete(
-        validationHandler(validation.delete),
         authMiddleWare('getUsers', 'delete'),
+        validationHandler(validation.delete),
         traineeRoutes.delete,
     );
 

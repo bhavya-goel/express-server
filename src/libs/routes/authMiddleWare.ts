@@ -19,7 +19,7 @@ export default (moduleName, permissionType) => (req, res, next) => {
         .then((user) => {
             if (!user) {
                 return next({
-                    error: 'Authentication failed',
+                    error: 'Forbidden',
                     message: 'Token not found',
                     status: 403,
                 });
@@ -32,15 +32,15 @@ export default (moduleName, permissionType) => (req, res, next) => {
             }
             else {
                 return next({
-                    error: 'unauthorized access',
+                    error: 'unauthorized',
                     message: `${info.role} doesn't has ${permissionType} access`,
-                    status: 403,
+                    status: 401,
                 });
             }
         });
     } catch (err) {
         return next({
-            error: 'Authentication failed',
+            error: 'Forbidden',
             message: 'Token not found',
             status: 403,
         });

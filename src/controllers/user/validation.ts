@@ -5,11 +5,7 @@ const validation = {
         email: {
             custom: (email: string) => {
             if (!validateEmail(email)) {
-                throw {
-                    error: 'incorrect email',
-                    message: 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed',
-                    status: 403,
-                };
+                throw 'Please enter email in format ( abc@successive.tech )special characters ( . -)allowed';
             }
             },
             errorMessage: 'Email is required',
