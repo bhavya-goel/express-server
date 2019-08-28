@@ -20,7 +20,6 @@ export default function seedData() {
         role: 'head-trainer',
     };
 
-
     // one time seeding
     userModel.countDocuments({}, (err, count) => {
         if ( count === 0 && !err) {
