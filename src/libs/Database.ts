@@ -8,7 +8,7 @@ class Database {
     return new Promise ((resolve, reject) => {
         mongoose.connect(mongoUri, { useNewUrlParser: true }, (err) => {
             if (err) {
-                reject(err);
+                return reject(err);
             }
             else {
                 resolve('database setup');

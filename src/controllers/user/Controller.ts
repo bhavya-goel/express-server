@@ -10,10 +10,10 @@ class UserRoutes {
 
 // function which checks email and password for login
 
-   public login(req, res, next) {
-      const { email, password} = req.body;
-      userRepository.get({ email})
-      .then((user) => {
+   public async login(req, res, next) {
+      try {
+         const { email, password} = req.body;
+         const user = await userRepository.get({ email});
          if ( !user ) {
             return next({
                error: 'email not found',
@@ -35,14 +35,14 @@ class UserRoutes {
             message: 'Authorization Token',
             status: 'ok',
          });
-      })
-      .catch((err) => {
+      }
+      catch (err) {
          return next({
             error: 'email not found',
-            message: 'Please sign up before login or provide correct email',
+            message: err.message || 'Please sign up before login or provide correct email',
             status: '400',
          });
-      });
+      }
    }
 
 // function which shows current user details

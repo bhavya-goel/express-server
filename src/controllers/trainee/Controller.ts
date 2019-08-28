@@ -8,8 +8,8 @@ class TraineeRoutes {
     public async get(request: Request, response: Response) {
         const {skip , limit} = request.query;
         const count = await userRepository.count();
-        userRepository.getAll({role: 'trainee'}, {password: 0}, { skip, limit})
-        .then((result) => {
+        const result = await userRepository.getAll({role: 'trainee'}, {password: 0}, { skip, limit});
+        if (result) {
             response.send({
                 data: {
                     count,
@@ -18,50 +18,50 @@ class TraineeRoutes {
                 message: 'Successfully fetched trainees',
                 status: 'OK',
             });
-        });
+        }
     }
 
 // function to create new trainee
-    public create(request: Request, response: Response, next) {
-        const { email, password, name } = request.body;
-        const data = {
-            email,
-            name,
-            password,
-        };
-        userRepository.createWithHash(data, request.user._id)
-        .then((result) => {
+    public async create(request: Request, response: Response, next) {
+        try {
+            const { email, password, name } = request.body;
+            const data = {
+                email,
+                name,
+                password,
+            };
+            const result = await userRepository.createWithHash(data, request.user._id);
             response.send({
                 data: result,
                 message: 'Trainee Created Successfully',
                 status: 'ok',
             });
-        })
-        .catch((err) => {
+        }
+        catch (err) {
             next({
                 error: 'Bad Request',
                 message: err.message,
                 status: 400,
             });
-        });
+        }
     }
 
 // function to update trainee
-    public update(request: Request, response: Response, next) {
-        const allowed = ['name', 'email', 'password'];
-        const data = Object.keys(request.body.dataToUpdate)
-        .filter((key) => allowed.includes(key))
-        .reduce((obj, key) => {
-            obj[key] = request.body.dataToUpdate[key];
-            return obj;
-        }, {});
-        userRepository.update({
-            originalID: request.body.id,
-        }, {
-            ...data,
-            userID: request.user.originalID,
-        })
-        .then(() => {
+    public async update(request: Request, response: Response, next) {
+        try {
+            const allowed = ['name', 'email', 'password'];
+            const data = Object.keys(request.body.dataToUpdate)
+            .filter((key) => allowed.includes(key))
+            .reduce((obj, key) => {
+                obj[key] = request.body.dataToUpdate[key];
+                return obj;
+            }, {});
+            await userRepository.update({
+                originalID: request.body.id,
+            }, {
+                ...data,
+                userID: request.user.originalID,
+            });
             response.send({
                 data: {
                     id: request.body.id,
@@ -69,37 +69,35 @@ class TraineeRoutes {
                 message: 'Trainee Updated Successfully',
                 status: 'OK',
             });
-        })
-        .catch((err) => {
+        }
+        catch (err) {
             next({
-            error: 'Bad Request',
-            message: err || 'update unsuccessful',
-            status: 400,
+                error: 'Bad Request',
+                message: err || 'update unsuccessful',
+                status: 400,
             });
-        });
+        }
     }
 
 // function to delete trainee
-    public delete(request: Request, response: Response, next) {
-        userRepository.delete({originalID: request.params.id}, request.user.originalID)
-        .then((res) => {
-            if (res) {
-                response.send({
-                    data: {
-                        id: request.params.id,
-                    },
-                    message: 'Trainee Deleted Successfully',
-                    status: 'OK',
-                });
-            }
-            else {
-                next({
-                    error: 'Trainee not found',
-                    message: 'Enter correct ID',
-                    status: 400,
-                });
-            }
-        });
+    public async delete(request: Request, response: Response, next) {
+        const result = await userRepository.delete({originalID: request.params.id}, request.user.originalID);
+        if (result) {
+            response.send({
+                data: {
+                    id: request.params.id,
+                },
+                message: 'Trainee Deleted Successfully',
+                status: 'OK',
+            });
+        }
+        else {
+            next({
+                error: 'Trainee not found',
+                message: 'Enter correct ID',
+                status: 400,
+            });
+        }
     }
 }
 
