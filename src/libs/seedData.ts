@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { configuration } from '../config';
 import { UserRepository } from '../repositories';
+import { userModel } from '../repositories/user/UserModel';
 const userRepository = new UserRepository();
 export default function seedData() {
     const saltCount = 10;
@@ -13,9 +14,17 @@ export default function seedData() {
     password: hash,
     role: 'trainee',
     };
-    if (!userRepository.get({})) {
-        userRepository.create(user);
-    }
+    userModel.countDocuments({
+        deletedAt: { $exists: false },
+        deletedBy: { $exists: false },
+        }, (err, count) => {
+        if ( count === 0 && !err) {
+            userRepository.create(user);
+        }
+        else if (err) {
+            console.log(err);
+        }
+    });
     // .then((res) => {
     //     userRepository.update({ name: 'user1'}, {email: 'user'}); })
     // .then((res) => {
