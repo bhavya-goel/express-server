@@ -6,6 +6,7 @@ import { default as validation } from './validation';
 const traineeRouter = express.Router();
 
 traineeRouter.route('/')
+
     .get(
         authMiddleWare('getUsers', 'write'),
         validationHandler(validation.get),
@@ -28,5 +29,4 @@ traineeRouter.route('/:id')
         validationHandler(validation.delete),
         traineeRoutes.delete,
     );
-
 export default traineeRouter;
