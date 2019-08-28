@@ -28,14 +28,12 @@ export default class VersionableRepository
             throw new Error('email exists');
         }
         else {
-            return this.versionableModel.create(data).then((res) => {
-                return res.toObject({transform: (doc, ret) => {
-                    delete ret.password;
-                    return ret;
-                }});
-            });
+            const result = await this.versionableModel.create(data);
+            return result.toObject({transform: (doc, ret) => {
+                delete ret.password;
+                return ret;
+            }});
         }
-
     }
 
     public async createWithHash(options, userid): Promise<D> {
@@ -56,12 +54,11 @@ export default class VersionableRepository
         if (count) {
             throw new Error('email exists');
         }
-        return this.versionableModel.create(data).then((res) => {
-            return res.toObject({transform: (doc, ret) => {
-                delete ret.password;
-                return ret;
-            }});
-        });
+        const result = await this.versionableModel.create(data);
+        return result.toObject({transform: (doc, ret) => {
+            delete ret.password;
+            return ret;
+        }});
     }
 
     public update(query, options): Promise<D> {
@@ -145,9 +142,8 @@ export default class VersionableRepository
         if (!user) {
             return undefined;
         }
-        return this.versionableModel.updateMany(options, dataToUpdate).then((res) => {
-            return res;
-        });
+        const result = await this.versionableModel.updateMany(options, dataToUpdate);
+        return result;
     }
 
     public async count() {

@@ -36,18 +36,18 @@ export class Server {
       this.run();
    }
 
-   public run() {
-      const {config: { port, mongoUri}} = this;
-      Database.open(mongoUri)
-      .then(() => {
+   public async run() {
+      try {
+         const {config: { port, mongoUri}} = this;
+         await Database.open(mongoUri);
          this.app.listen(port, () => {
             console.log('server running>>>>>>>>>\nport ::::::::::', port);
          });
-      })
-      .catch((err) => {
+      }
+      catch (err) {
          console.log(err.message);
          return err;
-      });
+      }
       return this;
    }
 }
