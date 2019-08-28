@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { configuration } from '../config';
-import { userModel, UserRepository } from '../repositories';
-
+import { UserRepository } from '../repositories';
+import { userModel } from '../repositories/user/UserModel';
 const userRepository = new UserRepository();
 
 export default function seedData() {
@@ -18,9 +18,10 @@ export default function seedData() {
         password: hash,
         role: 'head-trainer',
     };
-
-    // one time seeding
-    userModel.countDocuments({}, (err, count) => {
+    userModel.countDocuments({
+        deletedAt: { $exists: false },
+        deletedBy: { $exists: false },
+        }, (err, count) => {
         if ( count === 0 && !err) {
             userRepository.create(user, 'admin');
         }
@@ -28,4 +29,19 @@ export default function seedData() {
             console.log(err);
         }
     });
+    // .then((res) => {
+    //     userRepository.update({ name: 'user1'}, {email: 'user'}); })
+    // .then((res) => {
+    //     userRepository.get({
+    //         name: 'user1',
+    //     }, 'email', undefined);
+    // })
+    // .then((res) => {
+    //     userRepository.delete({email: 'user'});
+    // })
+    // .then((res) => {
+    //     userRepository.get({
+    //         name: 'user1',
+    //     }, 'email', undefined);
+    // });
 }
