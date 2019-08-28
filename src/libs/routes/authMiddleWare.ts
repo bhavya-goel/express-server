@@ -12,7 +12,13 @@ export default (moduleName, permissionType) => (req, res, next) => {
         const authorization = 'authorization';
         const token = req.headers[authorization];
         const key = configuration.secretKey;
-        const info = jwt.verify(token, key);
+        const info = jwt.verify(token, key, (err) => {
+            return next({
+                error: 'Forbidden',
+                message: 'error verifying the token',
+                status: 403,
+            });
+        });
 
         // to validate the token
         userRepository.get({ originalID: info.originalID}, { password : 0})
