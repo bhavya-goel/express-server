@@ -39,9 +39,9 @@ class TraineeRoutes {
         })
         .catch((err) => {
             next({
-                error: err || 'unauthorized access',
-                message: 'Token not found',
-                status: 403,
+                error: 'Bad Request',
+                message: err.message,
+                status: 400,
             });
         });
     }
@@ -72,9 +72,9 @@ class TraineeRoutes {
         })
         .catch((err) => {
             next({
-            error: err || 'Trainee not found',
-            message: 'Enter correct ID',
-            status: 403,
+            error: 'Bad Request',
+            message: err || 'update unsuccessful',
+            status: 400,
             });
         });
     }
@@ -96,7 +96,7 @@ class TraineeRoutes {
                 next({
                     error: 'Trainee not found',
                     message: 'Enter correct ID',
-                    status: 403,
+                    status: 400,
                 });
             }
         });

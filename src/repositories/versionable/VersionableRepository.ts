@@ -10,7 +10,7 @@ export default class VersionableRepository
 
     public async checkUnique(email: string) {
         // to check that email field is unique
-        const result = await this.getAll({email, role: 'trainee'}, 'email');
+        const result = await this.getAll({email}, 'email');
         return ( result.length > 0 );
     }
 
@@ -113,7 +113,7 @@ export default class VersionableRepository
                 }
             }
             else {
-                return reject(result);
+                return reject('ID not found');
             }
         });
     }

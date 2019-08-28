@@ -21,11 +21,19 @@ const validationHandler = (config) => (req, res, next) => {
             }
             // if key not passed and no error message present
             else if (index.errorMessage === undefined) {
-                next(`${key} required`);
+                next({
+                    error: 'Bad Request',
+                    message: `${key} required`,
+                    status: 400,
+                });
             }
             // throw error if key not present
             else {
-                next(index.errorMessage);
+                next({
+                    error: 'Bad Request',
+                    message: index.errorMessage,
+                    status: 400,
+                });
             }
         }
 
@@ -33,28 +41,44 @@ const validationHandler = (config) => (req, res, next) => {
         if ('regex' in index) {
             const pattern = /^[a-zA-Z0-9]+$/;
             if (! pattern.test(keyValue)) {
-                next('enter a alphanumeric name');
+                next({
+                    error: 'Bad Request',
+                    message: 'enter a alphanumeric name',
+                    status: 400,
+                });
             }
         }
 
         // checks if key is string or not
         if ('string' in index) {
                 if (typeof(keyValue) !== 'string') {
-                    next(`${key} not a string`);
+                    next({
+                        error: 'Bad Request',
+                        message: `${key} not a string`,
+                        status: 400,
+                    });
                 }
         }
 
         // checks if key is number or not
         if ('number' in index) {
                 if (isNaN(Number(keyValue))) {
-                    next(`${key} not a number`);
+                    next({
+                        error: 'Bad Request',
+                        message: `${key} not a number`,
+                        status: 400,
+                    });
                 }
             }
 
         // checks if key object or not
         if ('isObject' in index) {
             if (typeof(keyValue) !== 'object') {
-                next(`${key} not an object`);
+                next({
+                    error: 'Bad Request',
+                    message: `${key} not an object`,
+                    status: 400,
+                });
             }
         }
 
@@ -63,8 +87,12 @@ const validationHandler = (config) => (req, res, next) => {
             try {
                 index.custom(keyValue);
             }
-            catch (error) {
-                next(error);
+            catch (err) {
+                next({
+                    error: 'Bad Request',
+                    message: err.message,
+                    status: 400,
+                });
             }
         }
     });
