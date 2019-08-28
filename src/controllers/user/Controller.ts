@@ -37,7 +37,6 @@ class UserRoutes {
          });
       })
       .catch((err) => {
-         console.log('erorr', err);
          return next({
             error: 'email not found',
             message: 'Please sign up before login or provide correct email',
