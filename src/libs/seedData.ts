@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { configuration } from '../config';
+
 import { userModel, UserRepository } from '../repositories';
 
 const userRepository = new UserRepository();
@@ -19,13 +20,16 @@ export default function seedData() {
         role: 'head-trainer',
     };
 
+
     // one time seeding
+
     userModel.countDocuments({
         deletedAt: { $exists: false },
         deletedBy: { $exists: false },
         }, (err, count) => {
         if ( count === 0 && !err) {
             userRepository.create(user, 'admin');
+
         }
         else if (err) {
             console.log(err);
