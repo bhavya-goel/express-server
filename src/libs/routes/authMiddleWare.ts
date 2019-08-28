@@ -12,13 +12,7 @@ export default (moduleName, permissionType) => (req, res, next) => {
         const authorization = 'authorization';
         const token = req.headers[authorization];
         const key = configuration.secretKey;
-        const info = jwt.verify(token, key, (err) => {
-            return next({
-                error: 'Forbidden',
-                message: 'error verifying the token',
-                status: 403,
-            });
-        });
+        const info = jwt.verify(token, key);
 
         // to validate the token
         userRepository.get({ originalID: info.originalID}, { password : 0})
@@ -26,7 +20,7 @@ export default (moduleName, permissionType) => (req, res, next) => {
             if (!user) {
                 return next({
                     error: 'Forbidden',
-                    message: 'Token not found',
+                    message: 'Authentication failed',
                     status: 403,
                 });
             }
@@ -47,7 +41,7 @@ export default (moduleName, permissionType) => (req, res, next) => {
     } catch (err) {
         return next({
             error: 'Forbidden',
-            message: 'Token not found',
+            message: err.message || 'Authentication failed',
             status: 403,
         });
     }
