@@ -5,11 +5,11 @@ const userRepository = new UserRepository();
 
 class TraineeRoutes {
 // Function to fetch all trainees
-    public async get(request: Request, response: Response) {
-        const {skip , limit} = request.query;
-        const count = await userRepository.count();
-        const result = await userRepository.getAll({role: 'trainee'}, {password: 0}, { skip, limit});
-        if (result) {
+    public async get(request: Request, response: Response, next) {
+        try {
+            const {skip , limit} = request.query;
+            const count = await userRepository.count();
+            const result = await userRepository.getAll({ role: 'trainee' }, {password: 0}, { skip, limit});
             response.send({
                 data: {
                     count,
@@ -19,6 +19,14 @@ class TraineeRoutes {
                 status: 'OK',
             });
         }
+        catch (err) {
+            next({
+                error: 'Bad Request',
+                message: err.message || 'Could not fetch data',
+                status: 400,
+            });
+        }
+
     }
 
 // function to create new trainee
@@ -81,8 +89,8 @@ class TraineeRoutes {
 
 // function to delete trainee
     public async delete(request: Request, response: Response, next) {
-        const result = await userRepository.delete({originalID: request.params.id}, request.user.originalID);
-        if (result) {
+        try {
+            const result = await userRepository.delete({originalID: request.params.id}, request.user.originalID);
             response.send({
                 data: {
                     id: request.params.id,
@@ -91,10 +99,10 @@ class TraineeRoutes {
                 status: 'OK',
             });
         }
-        else {
+        catch (err) {
             next({
                 error: 'Trainee not found',
-                message: 'Enter correct ID',
+                message: err.message || 'Enter correct ID',
                 status: 400,
             });
         }
