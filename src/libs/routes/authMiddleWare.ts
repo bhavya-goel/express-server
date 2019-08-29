@@ -20,7 +20,7 @@ export default (moduleName, permissionType) => async (req, res, next) => {
             return next({
                 error: 'Forbidden',
                 message: 'Authentication failed',
-                status: 403,
+                status: 401,
             });
         }
 
@@ -33,14 +33,14 @@ export default (moduleName, permissionType) => async (req, res, next) => {
             return next({
                 error: 'unauthorized',
                 message: `${info.role} doesn't has ${permissionType} access`,
-                status: 401,
+                status: 403,
             });
         }
     } catch (err) {
         return next({
             error: 'Forbidden',
             message: err.message || 'Authentication failed',
-            status: 403,
+            status: 401,
         });
     }
 };
