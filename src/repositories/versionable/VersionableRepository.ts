@@ -140,7 +140,7 @@ export default class VersionableRepository
         };
         const user = await this.get(options).lean();
         if (!user) {
-            return undefined;
+            throw new Error('ID incorrect');
         }
         const result = await this.versionableModel.updateMany(options, dataToUpdate);
         return result;
