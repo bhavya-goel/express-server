@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { configuration } from '../../config';
 import { UserRepository } from '../../repositories';
+import { IQueryLogin } from '../../repositories/QueryInterface';
 
 const userRepository = new UserRepository();
 
@@ -12,7 +13,7 @@ class UserRoutes {
 
    public async login(req, res, next) {
       try {
-         const { email, password} = req.body;
+         const { email, password} = req.body as IQueryLogin;
          const user = await userRepository.get({ email});
          if ( !user ) {
             return next({

@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { UserRepository } from '../../repositories';
+import { IQueryGet, IQueryPost, IQueryPut } from '../../repositories/QueryInterface';
 
 const userRepository = new UserRepository();
 
@@ -8,7 +9,7 @@ class TraineeRoutes {
 // Function to fetch all trainees
     public async get(request: Request, response: Response, next) {
         try {
-            const {skip , limit} = request.query;
+            const {skip , limit} = request.query as IQueryGet;
             const count = await userRepository.count();
             const result = await userRepository.getAll({ role: 'trainee' }, {password: 0}, { skip, limit});
             response.send({
@@ -33,7 +34,7 @@ class TraineeRoutes {
 // function to create new trainee
     public create = async (request: Request, response: Response, next) => {
         try {
-            const { email, password, name } = request.body;
+            const { email, password, name } = request.body as IQueryPost;
             const hash = this.createHash(password);
             const data = {
                 email,
@@ -64,7 +65,7 @@ class TraineeRoutes {
                 dataToUpdate.password = this.createHash(dataToUpdate.password);
             }
             const allowed = ['name', 'email', 'password'];
-            const data = Object.keys(dataToUpdate)
+            const data: IQueryPut = Object.keys(dataToUpdate)
             .filter((key) => allowed.includes(key))
             .reduce((obj, key) => {
                 obj[key] = dataToUpdate[key];
