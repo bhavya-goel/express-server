@@ -74,8 +74,7 @@ const validation = {
                     throw new Error('password cannot be empty');
                 }
                 if ('email' in dataToUpdate && !validateEmail(dataToUpdate.email)) {
-                    throw new Error('Please enter email in format ( \
-                        abc@successive.tech )special characters ( . -)allowed');
+                    throw new Error('Please enter email in proper format');
                 }
             },
             in: ['body'],
