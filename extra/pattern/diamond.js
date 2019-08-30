@@ -1,7 +1,6 @@
 
 export default function diamond(num){
-    'use strict';
-    if ( num < 2 || num > 10 || num == undefined){
+    if ( num < 2 || num > 10 || !num){
         console.log("Please enter integer between 2 to 10 to print a diamond")
     }
     else{
@@ -41,5 +40,3 @@ export default function diamond(num){
     
 
 }
-
-
