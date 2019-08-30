@@ -22,10 +22,6 @@ export default class UserRepository extends VersionableRepository
         return super.create(data, userid);
     }
 
-    public createWithHash(data, userid) {
-        return super.createWithHash(data, userid);
-    }
-
     public delete(query, userid) {
         return super.delete(query, userid);
     }

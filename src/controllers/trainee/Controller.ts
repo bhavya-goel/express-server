@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { UserRepository } from '../../repositories';
 
@@ -30,15 +31,16 @@ class TraineeRoutes {
     }
 
 // function to create new trainee
-    public async create(request: Request, response: Response, next) {
+    public create = async (request: Request, response: Response, next) => {
         try {
             const { email, password, name } = request.body;
+            const hash = this.createHash(password);
             const data = {
                 email,
+                hash,
                 name,
-                password,
             };
-            const result = await userRepository.createWithHash(data, request.user._id);
+            const result = await userRepository.create(data, request.user._id);
             response.send({
                 data: result,
                 message: 'Trainee Created Successfully',
@@ -55,20 +57,24 @@ class TraineeRoutes {
     }
 
 // function to update trainee
-    public async update(request: Request, response: Response, next) {
+    public update = async (request: Request, response: Response, next) => {
         try {
+            const { body: { dataToUpdate, id }, user: { originalID } } = request;
+            if ('password' in dataToUpdate) {
+                dataToUpdate.password = this.createHash(dataToUpdate.password);
+            }
             const allowed = ['name', 'email', 'password'];
-            const data = Object.keys(request.body.dataToUpdate)
+            const data = Object.keys(dataToUpdate)
             .filter((key) => allowed.includes(key))
             .reduce((obj, key) => {
-                obj[key] = request.body.dataToUpdate[key];
+                obj[key] = dataToUpdate[key];
                 return obj;
             }, {});
             await userRepository.update({
-                originalID: request.body.id,
+                originalID: id,
             }, {
                 ...data,
-                userID: request.user.originalID,
+                userID: originalID,
             });
             response.send({
                 data: {
@@ -79,6 +85,7 @@ class TraineeRoutes {
             });
         }
         catch (err) {
+            console.log(err);
             next({
                 error: 'Bad Request',
                 message: err || 'update unsuccessful',
@@ -90,7 +97,8 @@ class TraineeRoutes {
 // function to delete trainee
     public async delete(request: Request, response: Response, next) {
         try {
-            const result = await userRepository.delete({originalID: request.params.id}, request.user.originalID);
+            const { params: { id }, user: { originalID } } = request;
+            await userRepository.delete({ id }, originalID);
             response.send({
                 data: {
                     id: request.params.id,
@@ -106,6 +114,13 @@ class TraineeRoutes {
                 status: 400,
             });
         }
+    }
+
+    public createHash = (password) => {
+        const saltCount = 10;
+        const salt = bcrypt.genSaltSync(saltCount);
+        const hash = bcrypt.hashSync(password, salt);
+        return hash;
     }
 }
 

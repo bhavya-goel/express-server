@@ -36,38 +36,8 @@ export default class VersionableRepository
         }
     }
 
-    public async createWithHash(options, userid): Promise<D> {
-        const saltCount = 10;
-        const salt = bcrypt.genSaltSync(saltCount);
-        const password = options.password;
-        const hash = bcrypt.hashSync(password, salt);
-        const id = mongoose.Types.ObjectId();
-        const data = {
-            ...options,
-            _id: id,
-            createdAt: Date.now(),
-            createdBy: userid,
-            originalID: id,
-            password: hash,
-        };
-        const count = await this.checkUnique(data.email);
-        if (count) {
-            throw new Error('email exists');
-        }
-        const result = await this.versionableModel.create(data);
-        return result.toObject({transform: (doc, ret) => {
-            delete ret.password;
-            return ret;
-        }});
-    }
-
     public update(query, options): Promise<D> {
         return new Promise(async (resolve, reject) => {
-            if (options.password) {
-                const saltCount = 10;
-                const salt = bcrypt.genSaltSync(saltCount);
-                options.password = bcrypt.hashSync(options.password, salt);
-            }
             const dataToUpdate = {
                 ...options,
                 updatedAt: Date.now(),
@@ -149,11 +119,11 @@ export default class VersionableRepository
     public async count() {
         let value;
         await this.versionableModel.countDocuments({
-        deletedAt: { $exists: false },
-        deletedBy: { $exists: false },
-        role: 'trainee',
+            deletedAt: { $exists: false },
+            deletedBy: { $exists: false },
+            role: 'trainee',
         }, (err, count) => {
-            value = count;
+                value = count;
         });
         return value;
     }
