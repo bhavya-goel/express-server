@@ -21,7 +21,7 @@ export default class UserRepository extends VersionableRepository
     public async create(data, userid) {
         const count = await this.checkUnique({ email: data.email});
         if (count) {
-            throw new Error('email exists1');
+            throw new Error('email exists');
         }
         const result = await super.create(data, userid);
         return result.toObject({transform: (doc, ret) => {
