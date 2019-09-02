@@ -26,53 +26,9 @@ export default class VersionableRepository
         return result;
     }
 
-    public update(query, options): Promise<D> {
-        return new Promise(async (resolve, reject) => {
-            const dataToUpdate = {
-                ...options,
-                updatedAt: Date.now(),
-                updatedBy: options.userID,
-            };
-            const result = await this.get(query);
-            if (result) {
-                const id = mongoose.Types.ObjectId();
-                const oldId = result._id;
-                const data = {
-                    ...result,
-                    _id: id,
-                    ...dataToUpdate,
-                };
-
-                // to check if email distinct or not
-                const count = await (('email' in dataToUpdate) && (this.checkUnique({ email: data.email})));
-                if (count) {
-                    return reject('email exists');
-                }
-
-                // create an updated copy
-                const create = await this.versionableModel.create(data);
-                if (!create) {
-                    return reject ('user update unsuccessful');
-                }
-
-                // delete previous copy
-                const final = this.versionableModel.updateOne({
-                        _id: oldId,
-                        }, {
-                            deletedAt: Date.now(),
-                            deletedBy: options.userID,
-                        });
-                if ( final ) {
-                    return resolve(final);
-                }
-                else {
-                    return reject('user update unsuccessful');
-                }
-            }
-            else {
-                return reject('ID not found');
-            }
-        });
+    public async update(query, data, options): Promise<D> {
+        await this.versionableModel.create(data);
+        return await this.delete(query, options.userID);
     }
 
     public get( query, projection?, options?) {

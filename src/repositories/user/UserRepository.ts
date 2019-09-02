@@ -34,8 +34,30 @@ export default class UserRepository extends VersionableRepository
         return super.delete(query, userid);
     }
 
-    public update(query, dataToUpdate) {
-        return super.update(query, dataToUpdate);
+    public async update(query, options) {
+        const result = await this.get(query);
+        if (!result) {
+            throw new Error('User not found');
+        }
+        const id = mongoose.Types.ObjectId();
+        const oldId = result._id;
+        const dataToUpdate = {
+            ...options,
+            updatedAt: Date.now(),
+            updatedBy: options.userID,
+        };
+        const data = {
+            ...result,
+            _id: id,
+            ...dataToUpdate,
+        };
+        // to check if email distinct or not
+        const count = await (('email' in dataToUpdate) && (this.checkUnique({ email: data.email})));
+        if (count) {
+            throw new Error('email exists');
+        }
+
+        return super.update({ _id: oldId}, data, options);
     }
 
     public count(query) {

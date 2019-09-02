@@ -86,10 +86,9 @@ class TraineeRoutes {
             });
         }
         catch (err) {
-            console.log(err);
             next({
                 error: 'Bad Request',
-                message: err || 'update unsuccessful',
+                message: err.message || 'update unsuccessful',
                 status: 400,
             });
         }
