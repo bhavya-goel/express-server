@@ -8,10 +8,9 @@ export default class VersionableRepository
         this.versionableModel = model;
     }
 
-    public async checkUnique(email: string) {
-        // to check that email field is unique
-        const result = await this.getAll({email}, 'email');
-        return ( result.length > 0 );
+    public async checkUnique(query) {
+        const result = await this.count(query);
+        return ( result > 0 );
     }
 
     public async create(option, userid): Promise<D> {
@@ -23,17 +22,8 @@ export default class VersionableRepository
             createdBy: userid,
             originalID: id,
         };
-        const count = await this.checkUnique(data.email);
-        if (count) {
-            throw new Error('email exists');
-        }
-        else {
-            const result = await this.versionableModel.create(data);
-            return result.toObject({transform: (doc, ret) => {
-                delete ret.password;
-                return ret;
-            }});
-        }
+        const result = await this.versionableModel.create(data);
+        return result;
     }
 
     public update(query, options): Promise<D> {
@@ -54,7 +44,7 @@ export default class VersionableRepository
                 };
 
                 // to check if email distinct or not
-                const count = await (('email' in dataToUpdate) && (this.checkUnique(data.email)));
+                const count = await (('email' in dataToUpdate) && (this.checkUnique({ email: data.email})));
                 if (count) {
                     return reject('email exists');
                 }
@@ -110,18 +100,18 @@ export default class VersionableRepository
         };
         const user = await this.get(options).lean();
         if (!user) {
-            throw new Error('ID incorrect');
+            throw new Error('User not found');
         }
         const result = await this.versionableModel.updateMany(options, dataToUpdate);
         return result;
     }
 
-    public async count() {
+    public async count(query) {
         let value;
         await this.versionableModel.countDocuments({
             deletedAt: { $exists: false },
             deletedBy: { $exists: false },
-            role: 'trainee',
+            ...query,
         }, (err, count) => {
                 value = count;
         });

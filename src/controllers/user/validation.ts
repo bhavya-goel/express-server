@@ -14,6 +14,11 @@ const validation = {
         },
 
         password: {
+            custom: (password: string) => {
+                if (password === '') {
+                    throw new Error('password cannot be empty');
+                }
+            },
             errorMessage: 'Password is required',
             in: ['body'],
             required: true,

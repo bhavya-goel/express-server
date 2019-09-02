@@ -18,8 +18,16 @@ export default class UserRepository extends VersionableRepository
         return super.get(query, projection, options);
     }
 
-    public create(data, userid) {
-        return super.create(data, userid);
+    public async create(data, userid) {
+        const count = await this.checkUnique({ email: data.email});
+        if (count) {
+            throw new Error('email exists1');
+        }
+        const result = await super.create(data, userid);
+        return result.toObject({transform: (doc, ret) => {
+            delete ret.password;
+            return ret;
+        }});
     }
 
     public delete(query, userid) {
@@ -30,7 +38,11 @@ export default class UserRepository extends VersionableRepository
         return super.update(query, dataToUpdate);
     }
 
-    public count() {
-        return super.count();
+    public count(query) {
+        return super.count(query);
+    }
+
+    public checkUnique(query) {
+        return super.checkUnique(query);
     }
 }

@@ -10,7 +10,7 @@ class TraineeRoutes {
     public async get(request: Request, response: Response, next) {
         try {
             const {skip , limit} = request.query as IQueryGet;
-            const count = await userRepository.count();
+            const count = await userRepository.count({ role: 'trainee' });
             const result = await userRepository.getAll({ role: 'trainee' }, {password: 0}, { skip, limit});
             response.send({
                 data: {
@@ -38,8 +38,8 @@ class TraineeRoutes {
             const hash = this.createHash(password);
             const data = {
                 email,
-                hash,
                 name,
+                password: hash,
             };
             const result = await userRepository.create(data, request.user._id);
             response.send({
@@ -99,7 +99,7 @@ class TraineeRoutes {
     public async delete(request: Request, response: Response, next) {
         try {
             const { params: { id }, user: { originalID } } = request;
-            await userRepository.delete({ id }, originalID);
+            await userRepository.delete({ originalID: id }, originalID);
             response.send({
                 data: {
                     id: request.params.id,
@@ -110,7 +110,7 @@ class TraineeRoutes {
         }
         catch (err) {
             next({
-                error: 'Trainee not found',
+                error: 'Bad Request',
                 message: err.message || 'Enter correct ID',
                 status: 400,
             });
