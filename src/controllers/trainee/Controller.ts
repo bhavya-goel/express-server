@@ -11,7 +11,8 @@ class TraineeRoutes {
         try {
             const {skip , limit} = request.query as IQueryGet;
             const count = await userRepository.count({ role: 'trainee' });
-            const result = await userRepository.getAll({ role: 'trainee' }, {password: 0}, { skip, limit});
+            const result = await userRepository.getAll({ role: 'trainee' },
+                {password: 0, __v: 0}, { skip, limit, sort: { name: 1} });
             response.send({
                 data: {
                     count,
@@ -35,13 +36,14 @@ class TraineeRoutes {
     public create = async (request: Request, response: Response, next) => {
         try {
             const { email, password, name } = request.body as IQueryPost;
+            const { originalID } = request.user;
             const hash = this.createHash(password);
             const data = {
                 email,
                 name,
                 password: hash,
             };
-            const result = await userRepository.create(data, request.user._id);
+            const result = await userRepository.create(data, originalID);
             response.send({
                 data: result,
                 message: 'Trainee Created Successfully',

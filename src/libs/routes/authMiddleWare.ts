@@ -15,7 +15,7 @@ export default (moduleName, permissionType) => async (req, res, next) => {
         const info = jwt.verify(token, key);
 
         // to validate the token
-        const user = await userRepository.get({ originalID: info.originalID}, { password : 0});
+        const user = await userRepository.get({ originalID: info.originalID}, { password : 0, __v: 0 });
         if (!user) {
             return next({
                 error: 'Forbidden',
