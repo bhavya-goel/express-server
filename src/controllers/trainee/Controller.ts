@@ -11,8 +11,12 @@ class TraineeRoutes {
         try {
             const {skip , limit} = request.query as IQueryGet;
             const count = await userRepository.count({ role: 'trainee' });
-            const result = await userRepository.getAll({ role: 'trainee' },
-                {password: 0, __v: 0}, { skip, limit, sort: { name: 1} });
+            const result = await userRepository.getAll(
+              { role: 'trainee' },
+              {password: 0, __v: 0},
+              { limit: Number(limit),
+                skip: Number(skip),
+                sort: { name: 1} });
             response.send({
                 data: {
                     count,
