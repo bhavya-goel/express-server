@@ -19,20 +19,16 @@ const validationHandler = (config) => (req, res, next) => {
                 });
                 keyValue = req[place][key];
             }
-            // if key not passed and no error message present
-            else if (index.errorMessage === undefined) {
-                error.push(`${key} required`);
-            }
-            // throw error if key not present
             else {
-                error.push(index.errorMessage);
+                error.push(key);
             }
         }
     });
     if (error.length !== 0) {
+        const message = error.join() + ' is required';
         return next({
             error: 'Bad Request',
-            message: error,
+            message,
             status: 400,
         });
     }
@@ -46,7 +42,7 @@ const validationHandler = (config) => (req, res, next) => {
         // checks if key is string or not
         if ('string' in index) {
             if (typeof(keyValue) !== 'string') {
-                error.push(`${key} not a string`);
+                error.push(`${key} must be a string`);
             }
             if (!keyValue) {
                 error.push(`${key} cannot be empty`);
@@ -64,14 +60,14 @@ const validationHandler = (config) => (req, res, next) => {
         // checks if key is number or not
         if ('number' in index) {
             if (isNaN(Number(keyValue))) {
-                error.push(`${key} not a number`);
+                error.push(`${key} must be a number`);
             }
         }
 
         // checks if key object or not
         if ('isObject' in index) {
             if (typeof(keyValue) !== 'object') {
-                error.push(`${key} not an object`);
+                error.push(`${key} must be an object`);
             }
         }
 
