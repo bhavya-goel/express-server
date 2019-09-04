@@ -33,14 +33,14 @@ class UserRoutes {
          const token = jwt.sign(user, configuration.secretKey, { expiresIn: '15m' });
          res.send({
             data: token,
-            message: 'Authorization Token',
+            message: 'User Login Successful',
             status: 'ok',
          });
       }
       catch (err) {
          return next({
             error: 'email not found',
-            message: err.message || 'Please sign up before login or provide correct email',
+            message: 'Login unsuccessful. Please try again',
             status: '400',
          });
       }

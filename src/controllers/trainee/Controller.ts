@@ -25,7 +25,7 @@ class TraineeRoutes {
         catch (err) {
             next({
                 error: 'Bad Request',
-                message: err.message || 'Could not fetch data',
+                message: 'Could not fetch data',
                 status: 400,
             });
         }
@@ -53,7 +53,7 @@ class TraineeRoutes {
         catch (err) {
             next({
                 error: 'Bad Request',
-                message: err.message,
+                message: err.message || 'Trainee not created',
                 status: 400,
             });
         }
