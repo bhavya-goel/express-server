@@ -55,6 +55,24 @@ class UserRoutes {
          status: 'OK',
       });
    }
+
+   public async getme(req, res, next) {
+     try {
+      const { id } = req.params;
+      const result = await userRepository.get({ originalID: id });
+      res.send({
+        data: result,
+        message: 'User Details Fetched',
+        status: 'ok',
+     });
+     } catch (err) {
+      return next({
+        error: 'Bad Request',
+        message: 'Provide correct ID',
+        status: '400',
+     });
+     }
+   }
 }
 
 export const userRoutes = new UserRoutes();
