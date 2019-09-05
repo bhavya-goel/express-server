@@ -19,7 +19,7 @@ export default (moduleName, permissionType) => async (req, res, next) => {
         if (!user) {
             return next({
                 error: 'Forbidden',
-                message: 'Authentication failed',
+                message: 'User Not Found',
                 status: 401,
             });
         }

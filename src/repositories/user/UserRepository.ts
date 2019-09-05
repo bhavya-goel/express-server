@@ -53,11 +53,14 @@ export default class UserRepository extends VersionableRepository
             ...dataToUpdate,
         };
         // to check if email distinct or not
-        const count = await (('email' in dataToUpdate) && (this.checkUnique({ email: data.email})));
+        const count = await (('email' in dataToUpdate) && (this.checkUnique(
+          { email: dataToUpdate.email,
+          originalID: {$ne: result.originalID },
+          },
+        )));
         if (count) {
             throw new Error('email exists');
         }
-
         return super.update({ _id: oldId}, data, options);
     }
 
