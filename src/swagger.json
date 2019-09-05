@@ -32,6 +32,20 @@
           "produces": [
             "application/json"
           ],
+          "parameters": [
+            {
+              "name": "skip",
+              "in": "query",
+              "required": false,
+              "type": "number"
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "type": "number"
+            }
+          ],
           "responses": {
             "200": {
               "description": "successful operation",
