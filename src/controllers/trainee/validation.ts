@@ -11,6 +11,7 @@ const validation = {
             errorMessage: 'Email is required',
             in: ['body'],
             required: true,
+            string: true,
         },
 
         name: {
@@ -18,17 +19,14 @@ const validation = {
             in: ['body'],
             regex: '',
             required: true,
+            string: true,
         },
 
         password: {
-            custom: (password: string) => {
-                if (password === '') {
-                    throw new Error('password cannot be empty');
-                }
-            },
             errorMessage: 'Password is required',
             in: ['body'],
             required: true,
+            string: true,
         },
     },
 
@@ -64,17 +62,19 @@ const validation = {
     {
         dataToUpdate: {
             custom: (dataToUpdate) => {
-                if ('name' in dataToUpdate) {
-                    const pattern = /^[a-zA-Z0-9]+$/;
-                    if (! pattern.test(dataToUpdate.name)) {
-                        throw new Error('enter a alphanumeric name');
+                if (typeof(dataToUpdate) === 'object') {
+                    if ('name' in dataToUpdate) {
+                        const pattern = /^[a-zA-Z0-9]+$/;
+                        if (! pattern.test(dataToUpdate.name)) {
+                            throw new Error('enter a alphanumeric name');
+                        }
                     }
-                }
-                if ('password' in dataToUpdate && dataToUpdate.password === '') {
-                    throw new Error('password cannot be empty');
-                }
-                if ('email' in dataToUpdate && !validateEmail(dataToUpdate.email)) {
-                    throw new Error('Please enter email in proper format');
+                    if ('password' in dataToUpdate && dataToUpdate.password === '') {
+                        throw new Error('password cannot be empty');
+                    }
+                    if ('email' in dataToUpdate && !validateEmail(dataToUpdate.email)) {
+                        throw new Error('Please enter email in proper format');
+                    }
                 }
             },
             in: ['body'],

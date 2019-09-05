@@ -13,13 +13,13 @@ export default class VersionableRepository
         return ( result > 0 );
     }
 
-    public async create(option, userid): Promise<D> {
+    public async create(option, userid?): Promise<D> {
         const id = mongoose.Types.ObjectId();
         const data = {
             ...option,
             _id: id,
             createdAt: Date.now(),
-            createdBy: userid,
+            createdBy: userid || id,
             originalID: id,
         };
         const result = await this.versionableModel.create(data);

@@ -15,7 +15,7 @@ export default (moduleName, permissionType) => async (req, res, next) => {
         const info = jwt.verify(token, key);
 
         // to validate the token
-        const user = await userRepository.get({ originalID: info.originalID}, { password : 0});
+        const user = await userRepository.get({ originalID: info.originalID}, { password : 0, __v: 0 });
         if (!user) {
             return next({
                 error: 'Forbidden',
@@ -32,14 +32,14 @@ export default (moduleName, permissionType) => async (req, res, next) => {
         else {
             return next({
                 error: 'unauthorized',
-                message: `${info.role} doesn't has ${permissionType} access`,
+                message: `${info.role} doesn't have access`,
                 status: 403,
             });
         }
     } catch (err) {
         return next({
             error: 'Forbidden',
-            message: err.message || 'Authentication failed',
+            message: 'Authentication failed',
             status: 401,
         });
     }
