@@ -16,7 +16,8 @@ class TraineeRoutes {
               {password: 0, __v: 0},
               { limit: Number(limit),
                 skip: Number(skip),
-                sort: { name: 1} });
+                sort: { name: 1},
+              });
             response.send({
                 data: {
                     count,
