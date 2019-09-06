@@ -58,12 +58,13 @@ const validation = {
         },
         sort: {
           custom: (sort) => {
-            if (!(sort === '1' || sort === '-1')) {
+            sort = Number(sort);
+            if (!(sort === 1 || sort === -1)) {
               throw new Error('sort value must be 1 or -1');
             }
           },
           default: 1,
-          errorMessage: 'Skip is invalid',
+          errorMessage: 'sort is invalid',
           in: ['query'],
           number: true,
           required: false,
