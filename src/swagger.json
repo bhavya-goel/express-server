@@ -44,6 +44,12 @@
               "in": "query",
               "required": false,
               "type": "number"
+            },
+            {
+              "name": "sort",
+              "in": "query",
+              "required": false,
+              "type": "number"
             }
           ],
           "responses": {
