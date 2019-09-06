@@ -9,14 +9,14 @@ class TraineeRoutes {
 // Function to fetch all trainees
     public async get(request: Request, response: Response, next) {
         try {
-            const {skip , limit} = request.query as IQueryGet;
+            const {skip, limit, sort } = request.query as IQueryGet;
             const count = await userRepository.count({ role: 'trainee' });
             const result = await userRepository.getAll(
               { role: 'trainee' },
               { password: 0, __v: 0 },
               { limit: Number(limit),
                 skip: Number(skip),
-                sort: { name: 1},
+                sort: { name: Number(sort)},
               });
             response.send({
                 data: {
