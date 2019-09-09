@@ -22,7 +22,8 @@ export default function seedData() {
     // one time seeding
     userModel.countDocuments({}, (err, count) => {
         if ( count === 0 && !err) {
-            userRepository.create(user);
+          console.log('seed Data');
+          userRepository.create(user);
         }
         else if (err) {
             console.log(err);

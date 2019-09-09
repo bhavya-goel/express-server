@@ -8,15 +8,13 @@ describe("Sucessfully fetch logged user details", () => {
   beforeAll(async (done) => {
     const server = new Server(configuration);
     app1 = await server.bootstrap();
-    await app1.run();
+    app1.run();
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
       .send({
         "email": "head.trainer@successive.tech",
         "password": "trainer@123" });
-    expect(res.status).toEqual(200);
-    expect(res.body).toHaveProperty("data");
     token = res.body.data;
     done();
   });

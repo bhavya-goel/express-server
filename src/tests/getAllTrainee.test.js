@@ -15,14 +15,11 @@ describe("Sucessfully fetch all trainee details", () => {
       .send({
         "email": "head.trainer@successive.tech",
         "password": "trainer@123" });
-    expect(res.status).toEqual(200);
-    expect(res.body).toHaveProperty("data");
     token = res.body.data;
 
     done();
   });
   afterAll(async (done) => {
-    // console.log(mongoose.connection.db)
     await app1.close();
     console.log("closed");
     done();

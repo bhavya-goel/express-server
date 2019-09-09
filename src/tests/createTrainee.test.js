@@ -21,8 +21,6 @@ describe("Sucessfully fetch all trainee details", () => {
       .send({
         "email": "head.trainer@successive.tech",
         "password": "trainer@123" });
-    expect(res.status).toEqual(200);
-    expect(res.body).toHaveProperty("data");
     token = res.body.data;
     done();
   });
@@ -45,7 +43,7 @@ describe("Sucessfully fetch all trainee details", () => {
     done();
   });
 
-  test("try to create trainee with existing ID", async (done) => {
+  test("try to create trainee with existing email", async (done) => {
     const res = await request(app1.app)
       .post("/api/trainee")
       .set("Authorization", token)
