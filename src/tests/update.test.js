@@ -2,6 +2,7 @@ import { configuration } from "../config";
 import { Server } from "../Server";
 import request from "supertest";
 import { userModel } from "../repositories/user/UserModel";
+import { Database } from "../libs";
 
 let app1;
 let token;
@@ -14,7 +15,7 @@ describe("Sucessfully update trainee ", () => {
     });
     const server = new Server(configuration);
     app1 = await server.bootstrap();
-    await app1.run();
+    await Database.open(configuration.mongoUri);
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -24,11 +25,11 @@ describe("Sucessfully update trainee ", () => {
     token = res.body.data;
     done();
   });
-  afterEach(async (done) => {
-    await app1.close();
-    console.log("closed");
-    done();
-  });
+  // afterEach(async (done) => {
+  //   await app1.close();
+  //   console.log("closed");
+  //   done();
+  // });
   test("try to update trainee successfully", async (done) => {
     const res = await request(app1.app)
       .post("/api/trainee")
@@ -52,6 +53,8 @@ describe("Sucessfully update trainee ", () => {
     expect(res1.body).toHaveProperty("data");
     expect(res1.status).toEqual(200);
     expect(res1.body.message).toMatch("Trainee Updated Successfully");
+    console.log(1);
+
     done();
   });
 
@@ -78,6 +81,8 @@ describe("Sucessfully update trainee ", () => {
     expect(res1.body).toHaveProperty("error");
     expect(res1.status).toEqual(400);
     expect(res1.body.message).toMatch("email exists");
+    console.log(2);
+
     done();
   });
 
@@ -93,6 +98,8 @@ describe("Sucessfully update trainee ", () => {
     expect(res.body).toHaveProperty("error");
     expect(res.status).toEqual(400);
     expect(res.body.message).toMatch("User not found");
+    console.log(3);
+
     done();
   });
 });

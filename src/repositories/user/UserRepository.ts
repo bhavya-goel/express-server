@@ -23,12 +23,14 @@ export default class UserRepository extends VersionableRepository
         if (count) {
             throw new Error('email exists');
         }
-        const result = await super.create(data, userid);
-        return result.toObject({transform: (doc, ret) => {
+        else {
+          const result = await super.create(data, userid);
+          return result.toObject({transform: (doc, ret) => {
             delete ret.password;
             delete ret.__v;
             return ret;
         }});
+        }
     }
 
     public delete(query, userid) {

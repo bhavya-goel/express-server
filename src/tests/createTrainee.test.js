@@ -1,4 +1,5 @@
 import { configuration } from "../config";
+import { Database } from "../libs";
 import { Server } from "../Server";
 import request from "supertest";
 import { userModel } from "../repositories/user/UserModel";
@@ -14,7 +15,7 @@ describe("Sucessfully fetch all trainee details", () => {
     });
     const server = new Server(configuration);
     app1 = await server.bootstrap();
-    await app1.run();
+    await Database.open(configuration.mongoUri);
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -24,11 +25,11 @@ describe("Sucessfully fetch all trainee details", () => {
     token = res.body.data;
     done();
   });
-  afterAll(async (done) => {
-    await app1.close();
-    console.log("closed");
-    done();
-  });
+  // afterAll(async (done) => {
+  //   await app1.close();
+  //   console.log("closed");
+  //   done();
+  // });
   test("try to create trainee successfully", async (done) => {
     const res = await request(app1.app)
       .post("/api/trainee")
@@ -40,6 +41,7 @@ describe("Sucessfully fetch all trainee details", () => {
     expect(res.body).toHaveProperty("data");
     expect(res.status).toEqual(200);
     expect(res.body.message).toMatch("Trainee Created Successfully");
+    console.log(1);
     done();
   });
 
@@ -54,6 +56,8 @@ describe("Sucessfully fetch all trainee details", () => {
     expect(res.body).toHaveProperty("error");
     expect(res.status).toEqual(400);
     expect(res.body .message).toEqual("email exists");
+    console.log(2);
+
     done();
   });
 
@@ -64,6 +68,8 @@ describe("Sucessfully fetch all trainee details", () => {
     expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body .error).toEqual("Bad Request");
+    console.log(3);
+
     done();
   });
 
@@ -79,6 +85,8 @@ describe("Sucessfully fetch all trainee details", () => {
     expect(res.body).toHaveProperty("error");
     expect(res.body .error).toEqual("Bad Request");
     expect(res.body.message).toContain("Please enter email in proper format");
+    console.log(4);
+
     done();
   });
 

@@ -1,4 +1,5 @@
 import { configuration } from "../config";
+import { Database } from "../libs";
 import { Server } from "../Server";
 import request from "supertest";
 import { userModel } from "../repositories/user/UserModel";
@@ -14,7 +15,7 @@ describe("Sucessfully delete trainee ", () => {
     });
     const server = new Server(configuration);
     app1 = await server.bootstrap();
-    await app1.run();
+    await Database.open(configuration.mongoUri);
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -24,11 +25,11 @@ describe("Sucessfully delete trainee ", () => {
     token = res.body.data;
     done();
   });
-  afterAll(async (done) => {
-    await app1.close();
-    console.log("closed");
-    done();
-  });
+  // afterAll(async (done) => {
+  //   await app1.close();
+  //   console.log("closed");
+  //   done();
+  // });
   test("try to delete trainee successfully", async (done) => {
     const res = await request(app1.app)
       .post("/api/trainee")
@@ -39,7 +40,6 @@ describe("Sucessfully delete trainee ", () => {
           "name": "abc",
           "password": "abc" });
     const id = res.body.data.originalID;
-    console.log("id", id);
 
     const res1 = await request(app1.app)
       .delete(`/api/trainee/${id}`)
@@ -48,6 +48,8 @@ describe("Sucessfully delete trainee ", () => {
     expect(res1.body).toHaveProperty("data");
     expect(res1.status).toEqual(200);
     expect(res1.body.message).toMatch("Trainee Deleted Successfully");
+    console.log(1);
+
     done();
   });
 
@@ -59,6 +61,8 @@ describe("Sucessfully delete trainee ", () => {
     expect(res.body).toHaveProperty("error");
     expect(res.status).toEqual(400);
     expect(res.body.message).toMatch("User not found");
+    console.log(2);
+
     done();
   });
 

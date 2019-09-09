@@ -1,6 +1,8 @@
 import { configuration } from "../config";
 import { Server } from "../Server";
 import request from "supertest";
+import { Database } from "../libs";
+
 let app1;
 let token;
 
@@ -8,7 +10,7 @@ describe("Sucessfully fetch all trainee details", () => {
   beforeAll(async (done) => {
     const server = new Server(configuration);
     app1 = await server.bootstrap();
-    await app1.run();
+    await Database.open(configuration.mongoUri);
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -19,11 +21,11 @@ describe("Sucessfully fetch all trainee details", () => {
 
     done();
   });
-  afterAll(async (done) => {
-    await app1.close();
-    console.log("closed");
-    done();
-  });
+  // afterAll(async (done) => {
+  //   await app1.close();
+  //   console.log("closed");
+  //   done();
+  // });
   test("try to fetch all trainee successfully", async (done) => {
     const res = await request(app1.app)
       .get("/api/trainee")
@@ -31,6 +33,8 @@ describe("Sucessfully fetch all trainee details", () => {
     expect(res.body).toHaveProperty("data");
     expect(res.body.data).toHaveProperty("count");
     expect(res.body.data).toHaveProperty("records");
+    console.log(1);
+
     done();
   });
 
@@ -42,6 +46,8 @@ describe("Sucessfully fetch all trainee details", () => {
     expect(res.body.data).toHaveProperty("count");
     expect(res.body.data).toHaveProperty("records");
     expect(res.body.data.records.length).toBeLessThanOrEqual(1);
+    console.log(2);
+
     done();
   });
 
@@ -52,6 +58,8 @@ describe("Sucessfully fetch all trainee details", () => {
     expect(res.body).toHaveProperty("error");
     expect(res.body.message).toEqual("Authentication failed");
     expect(res.status).toEqual(401);
+    console.log(3);
+
     done();
   });
 
@@ -62,6 +70,8 @@ describe("Sucessfully fetch all trainee details", () => {
     expect(res.body).toHaveProperty("error");
     expect(res.body.error).toEqual("Bad Request");
     expect(res.status).toEqual(400);
+    console.log(4);
+
     done();
   });
 
