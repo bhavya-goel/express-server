@@ -377,8 +377,8 @@
             "example": "Successfully fetched trainees"
           },
           "status": {
-            "type": "string",
-            "example": "OK"
+            "type": "integer",
+            "example": 200
           }
         }
       },
@@ -398,8 +398,8 @@
             "example": "Trainee Created Successfully"
           },
           "status": {
-            "type": "string",
-            "example": "OK"
+            "type": "integer",
+            "example": 200
           }
         }
       },
@@ -419,8 +419,8 @@
             "example": "Trainee Deleted Successfully"
           },
           "status": {
-            "type": "string",
-            "example": "ok"
+            "type": "integer",
+            "example": 200
           }
         }
       },
@@ -507,8 +507,8 @@
             "example": "Authorization Token"
           },
           "status": {
-            "type": "string",
-            "example": "ok"
+            "type": "integer",
+            "example": 200
           }
         }
       },
@@ -528,8 +528,8 @@
             "example": "Trainee Updated Successfully"
           },
           "status": {
-            "type": "string",
-            "example": "ok"
+            "type": "integer",
+            "example": 200
           }
         }
       },
@@ -549,8 +549,8 @@
             "example": "user details fetched"
           },
           "status": {
-            "type": "string",
-            "example": "OK"
+            "type": "integer",
+            "example": 200
           }
         }
       }

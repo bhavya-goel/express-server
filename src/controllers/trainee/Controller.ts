@@ -24,7 +24,7 @@ class TraineeRoutes {
                     records: result,
                 },
                 message: 'Successfully fetched trainees',
-                status: 'OK',
+                status: 200,
             });
         }
         catch (err) {
@@ -52,7 +52,7 @@ class TraineeRoutes {
             response.send({
                 data: result,
                 message: 'Trainee Created Successfully',
-                status: 'ok',
+                status: 200,
             });
         }
         catch (err) {
@@ -89,7 +89,7 @@ class TraineeRoutes {
                     id: request.body.id,
                 },
                 message: 'Trainee Updated Successfully',
-                status: 'OK',
+                status: 200,
             });
         }
         catch (err) {
@@ -111,7 +111,7 @@ class TraineeRoutes {
                     id: request.params.id,
                 },
                 message: 'Trainee Deleted Successfully',
-                status: 'OK',
+                status: 200,
             });
         }
         catch (err) {

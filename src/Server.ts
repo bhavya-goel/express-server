@@ -8,20 +8,15 @@ import * as swaggerDocument from './swagger.json';
 export class Server {
 
    private app;
+   private httpServer;
       constructor(private config: IConfig) {
       this.app = express();
    }
 
    public bootstrap() {
-     return new Promise((resolve, reject) => {
-       try {
         this.initBodyParser();
         this.setupRoutes();
-        return resolve(this);
-       } catch (err) {
-        return reject(err);
-       }
-     });
+        return this;
    }
 
    public initBodyParser() {
@@ -45,7 +40,7 @@ export class Server {
       try {
          const {config: { port, mongoUri}} = this;
          await Database.open(mongoUri);
-         this.app.listen(port, () => {
+         this.httpServer = this.app.listen(port, () => {
             console.log('server running>>>>>>>>>\nport ::::::::::', port);
          });
       }
@@ -54,5 +49,10 @@ export class Server {
          return err;
       }
       return this;
+   }
+
+   public async close() {
+     this.httpServer.close();
+     return this;
    }
 }

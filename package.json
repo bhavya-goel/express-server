@@ -9,7 +9,8 @@
     "start": "tsc-watch --project . --onSuccess \" npm run nodemon\"",
     "nodemon": "nodemon ./dist/src/index.js",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000"
+    "preTest": "rimraf dist && npm run test",
+    "test": "cross-env NODE_ENV=test jest  --testTimeout=100000"
   },
   "repository": {
     "type": "git",

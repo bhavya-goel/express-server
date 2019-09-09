@@ -19,7 +19,7 @@ class UserRoutes {
             return next({
                error: 'email not found',
                message: 'Please sign up before login or provide correct email',
-               status: '400',
+               status: 400,
             });
          }
          const { password: hashPassword} = user;
@@ -27,21 +27,21 @@ class UserRoutes {
             return next({
                error: 'password not matched',
                message: 'please provide correct pasword',
-               status: '400',
+               status: 400,
             });
          }
          const token = jwt.sign(user, configuration.secretKey, { expiresIn: '15m' });
          res.send({
             data: token,
             message: 'User Login Successful',
-            status: 'ok',
+            status: 200,
          });
       }
       catch (err) {
          return next({
             error: 'email not found',
             message: 'Login unsuccessful. Please try again',
-            status: '400',
+            status: 400,
          });
       }
    }
@@ -52,7 +52,7 @@ class UserRoutes {
       res.send({
          data: req.user,
          message: 'User details fetched',
-         status: 'OK',
+         status: 200,
       });
    }
 
@@ -63,13 +63,13 @@ class UserRoutes {
       res.send({
         data: result,
         message: 'User Details Fetched',
-        status: 'ok',
+        status: 200,
      });
      } catch (err) {
       return next({
         error: 'Bad Request',
         message: 'Provide correct ID',
-        status: '400',
+        status: 400,
      });
      }
    }

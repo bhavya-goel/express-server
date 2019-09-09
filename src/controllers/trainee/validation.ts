@@ -5,7 +5,7 @@ const validation = {
         email: {
             custom: (email: string) => {
                 if (!validateEmail(email)) {
-                    throw new Error('Please enter email in proper format ');
+                    throw new Error('Please enter email in proper format');
                 }
             },
             errorMessage: 'Email is required',
