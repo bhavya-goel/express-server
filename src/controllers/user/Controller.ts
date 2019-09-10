@@ -56,10 +56,13 @@ class UserRoutes {
       });
    }
 
-   public async getme(req, res, next) {
+   public async getUserwithID(req, res, next) {
      try {
       const { id } = req.params;
       const result = await userRepository.get({ originalID: id });
+      if ( !result ) {
+        throw new Error('user not found');
+      }
       res.send({
         data: result,
         message: 'User Details Fetched',

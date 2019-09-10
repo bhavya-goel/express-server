@@ -3,19 +3,23 @@ import { Database } from "../libs";
 import { Server } from "../Server";
 import request from "supertest";
 import { userModel } from "../repositories/user/UserModel";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
 let token;
 
 describe("Sucessfully fetch all trainee details", () => {
   beforeAll(async (done) => {
-
-    userModel.deleteMany({role: "trainee"}, (err) => {
-      console.log(err);
-    });
+    const mongoServer = new MongoMemoryServer();
+    const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
-    await Database.open(configuration.mongoUri);
+    await Database.open(url);
+    userModel.deleteMany({role: "trainee"});
+    done();
+  });
+
+  beforeAll(async (done) => {
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -35,13 +39,14 @@ describe("Sucessfully fetch all trainee details", () => {
       .post("/api/trainee")
       .set("Authorization", token)
       .send({
-          "email": "abc@successive.tech",
-          "name": "abc",
-          "password": "abc" });
+        "email": "abc@successive.tech",
+        "name": "abc",
+        "password": "abc" });
+
     expect(res.body).toHaveProperty("data");
     expect(res.status).toEqual(200);
     expect(res.body.message).toMatch("Trainee Created Successfully");
-    console.log(1);
+
     done();
   });
 
@@ -50,13 +55,13 @@ describe("Sucessfully fetch all trainee details", () => {
       .post("/api/trainee")
       .set("Authorization", token)
       .send({
-          "email": "abc@successive.tech",
-          "name": "abc",
-          "password": "abc" });
+        "email": "abc@successive.tech",
+        "name": "abc",
+        "password": "abc" });
+
     expect(res.body).toHaveProperty("error");
     expect(res.status).toEqual(400);
     expect(res.body .message).toEqual("email exists");
-    console.log(2);
 
     done();
   });
@@ -65,27 +70,32 @@ describe("Sucessfully fetch all trainee details", () => {
     const res = await request(app1.app)
       .post("/api/trainee")
       .set("Authorization", token);
+
     expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body .error).toEqual("Bad Request");
-    console.log(3);
+    expect(res.body.message).toContain("email is required");
+    expect(res.body.message).toContain("name is required");
+    expect(res.body.message).toContain("password is required");
 
     done();
   });
 
-  test("create trainee with wrong name type", async (done) => {
+  test("create trainee with wrong input type", async (done) => {
     const res = await request(app1.app)
       .post("/api/trainee")
       .set("Authorization", token)
       .send({
         "email": "abc@succesive.tech",
-        "name": "abc",
-        "password": "abc" });
+        "name": "abc@.",
+        "password": "" });
+
     expect(res.status).toEqual(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body .error).toEqual("Bad Request");
     expect(res.body.message).toContain("Please enter email in proper format");
-    console.log(4);
+    expect(res.body.message).toContain("enter a alphanumeric name");
+    expect(res.body.message).toContain("password cannot be empty");
 
     done();
   });

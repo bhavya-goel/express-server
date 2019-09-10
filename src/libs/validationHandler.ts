@@ -76,7 +76,7 @@ const validationHandler = (config) => (req, res, next) => {
                 index.custom(keyValue);
             }
             catch (err) {
-                error.push(err.message);
+              error.push(err.message);
             }
         }
     });

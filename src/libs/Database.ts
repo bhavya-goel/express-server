@@ -3,19 +3,15 @@ import seedData from './seedData';
 
 class Database {
 
-    public static open(mongoUri) {
-
-    return new Promise ((resolve, reject) => {
-        mongoose.connect(mongoUri, { useNewUrlParser: true }, (err) => {
-            if (err) {
-                return reject(err);
-            }
-            else {
-                resolve('database setup');
-                seedData();
-            }
-        });
-    });
+    public static async open(mongoUri) {
+      await mongoose.connect(mongoUri, { useNewUrlParser: true }, async (err) => {
+          if (err) {
+            throw new Error('DB setup failed');
+          }
+          else {
+              await seedData();
+          }
+      });
     }
 
     public static close() {

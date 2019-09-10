@@ -8,7 +8,6 @@ import * as swaggerDocument from './swagger.json';
 export class Server {
 
    private app;
-   private httpServer;
       constructor(private config: IConfig) {
       this.app = express();
    }
@@ -40,7 +39,7 @@ export class Server {
       try {
          const {config: { port, mongoUri}} = this;
          await Database.open(mongoUri);
-         this.httpServer = this.app.listen(port, () => {
+         this.app.listen(port, () => {
             console.log('server running>>>>>>>>>\nport ::::::::::', port);
          });
       }
@@ -51,8 +50,4 @@ export class Server {
       return this;
    }
 
-   public async close() {
-     this.httpServer.close();
-     return this;
-   }
 }

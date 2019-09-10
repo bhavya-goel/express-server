@@ -31,7 +31,7 @@ export default class VersionableRepository
         return await this.delete(query, options.userID);
     }
 
-    public get( query, projection?, options?) {
+    public async get( query, projection?, options?) {
         const queryNew = {
             ...query,
             deletedAt: { $exists: false },
@@ -40,7 +40,7 @@ export default class VersionableRepository
         return this.versionableModel.findOne(queryNew, projection, options).lean();
     }
 
-    public getAll( query, projection?, options?) {
+    public async getAll( query, projection?, options?) {
         const queryNew = {
             ...query,
             deletedAt: { $exists: false },
@@ -54,7 +54,7 @@ export default class VersionableRepository
             deletedAt: Date.now(),
             deletedBy: userid,
         };
-        const user = await this.get(options).lean();
+        const user = await this.get(options);
         if (!user) {
             throw new Error('User not found');
         }
@@ -63,15 +63,16 @@ export default class VersionableRepository
     }
 
     public async count(query) {
-        let value;
-        await this.versionableModel.countDocuments({
-            deletedAt: { $exists: false },
-            deletedBy: { $exists: false },
-            ...query,
-        }, (err, count) => {
-                value = count;
+      try {
+        const value = await this.versionableModel.countDocuments({
+          deletedAt: { $exists: false },
+          deletedBy: { $exists: false },
+          ...query,
         });
         return value;
+      } catch (err) {
+        throw new Error('DB error');
+      }
     }
 
 }

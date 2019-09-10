@@ -3,19 +3,26 @@ import { Server } from "../Server";
 import request from "supertest";
 import { userModel } from "../repositories/user/UserModel";
 import { Database } from "../libs";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
-let token;
+let token = null;
+let id = null;
 
 describe("Sucessfully update trainee ", () => {
   beforeEach(async (done) => {
 
-    userModel.deleteMany({role: "trainee"}, (err) => {
-      console.log(err);
-    });
+    const mongoServer = new MongoMemoryServer();
+    const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
-    await Database.open(configuration.mongoUri);
+    await Database.open(url);
+
+    userModel.deleteMany({role: "trainee"});
+    done();
+  });
+
+  beforeEach(async (done) => {
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -25,6 +32,19 @@ describe("Sucessfully update trainee ", () => {
     token = res.body.data;
     done();
   });
+
+  beforeEach(async (done) => {
+    const res = await request(app1.app)
+      .post("/api/trainee")
+      .set("Accept", "application/json")
+      .set("Authorization", token)
+      .send({
+          "email": "abc1@successive.tech",
+          "name": "abc1",
+          "password": "abc1" });
+    id = res.body.data.originalID;
+    done();
+  });
   // afterEach(async (done) => {
   //   await app1.close();
   //   console.log("closed");
@@ -32,57 +52,46 @@ describe("Sucessfully update trainee ", () => {
   // });
   test("try to update trainee successfully", async (done) => {
     const res = await request(app1.app)
-      .post("/api/trainee")
-      .set("Accept", "application/json")
-      .set("Authorization", token)
-      .send({
-          "email": "abc1@successive.tech",
-          "name": "abc1",
-          "password": "abc1" });
-    const id = res.body.data.originalID;
-    console.log("id", id);
-
-    const res1 = await request(app1.app)
       .put("/api/trainee")
       .set("Accept", "application/json")
       .set("Authorization", token)
       .send({
         "dataToUpdate": {
           "name": "hello" },
-          "id": id });
-    expect(res1.body).toHaveProperty("data");
-    expect(res1.status).toEqual(200);
-    expect(res1.body.message).toMatch("Trainee Updated Successfully");
-    console.log(1);
+        "id": id });
 
+    expect(res.body).toHaveProperty("data");
+    expect(res.status).toEqual(200);
+    expect(res.body.message).toMatch("Trainee Updated Successfully");
     done();
   });
 
   test("try to update trainee with existing email", async (done) => {
     const res = await request(app1.app)
-      .post("/api/trainee")
-      .set("Accept", "application/json")
-      .set("Authorization", token)
-      .send({
-          "email": "abc1@successive.tech",
-          "name": "abc1",
-          "password": "abc1" });
-    const id = res.body.data.originalID;
-    console.log("id", id);
-
-    const res1 = await request(app1.app)
       .put("/api/trainee")
       .set("Accept", "application/json")
       .set("Authorization", token)
       .send({
         "dataToUpdate": {
           "email": "head.trainer@successive.tech" },
-          "id": id });
-    expect(res1.body).toHaveProperty("error");
-    expect(res1.status).toEqual(400);
-    expect(res1.body.message).toMatch("email exists");
-    console.log(2);
+        "id": id });
 
+    expect(res.body).toHaveProperty("error");
+    expect(res.status).toEqual(400);
+    expect(res.body.message).toMatch("email exists");
+    done();
+  });
+
+  test("try to update trainee without inputs", async (done) => {
+    const res = await request(app1.app)
+      .put("/api/trainee")
+      .set("Accept", "application/json")
+      .set("Authorization", token);
+
+    expect(res.body).toHaveProperty("error");
+    expect(res.status).toEqual(400);
+    expect(res.body.message).toContain("dataToUpdate is required");
+    expect(res.body.message).toContain("id is required");
     done();
   });
 
@@ -94,11 +103,46 @@ describe("Sucessfully update trainee ", () => {
       .send({
         "dataToUpdate": {
           "name": "hello" },
-          "id": "12345" });
+        "id": "12345" });
+
     expect(res.body).toHaveProperty("error");
     expect(res.status).toEqual(400);
     expect(res.body.message).toMatch("User not found");
-    console.log(3);
+    done();
+  });
+
+  test("try to update trainee with wrong input type", async (done) => {
+    const res = await request(app1.app)
+      .put("/api/trainee")
+      .set("Accept", "application/json")
+      .set("Authorization", token)
+      .send({
+        "dataToUpdate": "",
+        "id": {} });
+
+    expect(res.body).toHaveProperty("error");
+    expect(res.status).toEqual(400);
+    expect(res.body.message).toContain("dataToUpdate must be an object");
+    expect(res.body.message).toContain("id must be a string");
+    done();
+  });
+
+  test("try to update trainee with wrong dataToUpdate type", async (done) => {
+    const res = await request(app1.app)
+      .put("/api/trainee")
+      .set("Accept", "application/json")
+      .set("Authorization", token)
+      .send({
+        "dataToUpdate": {
+          "email": "test@gmail.com",
+          "name": "test@!",
+          "password": "" },
+        "id": "12345" });
+
+    expect(res.body).toHaveProperty("error");
+    expect(res.status).toEqual(400);
+    expect(res.body.message).toContain("enter an alphanumeric name\
+,password cannot be empty,Please enter email in proper format");
 
     done();
   });

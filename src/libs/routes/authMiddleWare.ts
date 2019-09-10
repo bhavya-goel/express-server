@@ -32,7 +32,7 @@ export default (moduleName, permissionType) => async (req, res, next) => {
         else {
             return next({
                 error: 'unauthorized',
-                message: `${info.role} doesn't have access`,
+                message: 'you are not authorized to access it',
                 status: 403,
             });
         }

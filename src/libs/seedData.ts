@@ -4,7 +4,7 @@ import { UserRepository } from '../repositories';
 import { userModel } from '../repositories/user/UserModel';
 const userRepository = new UserRepository();
 
-export default function seedData() {
+export default async function seedData() {
     // to create hash for password
 
     const saltCount = 10;
@@ -20,28 +20,13 @@ export default function seedData() {
     };
 
     // one time seeding
-    userModel.countDocuments({}, (err, count) => {
-        if ( count === 0 && !err) {
-          console.log('seed Data');
-          userRepository.create(user);
-        }
-        else if (err) {
-            console.log(err);
-        }
-    });
-    // .then((res) => {
-    //     userRepository.update({ name: 'user1'}, {email: 'user'}); })
-    // .then((res) => {
-    //     userRepository.get({
-    //         name: 'user1',
-    //     }, 'email', undefined);
-    // })
-    // .then((res) => {
-    //     userRepository.delete({email: 'user'});
-    // })
-    // .then((res) => {
-    //     userRepository.get({
-    //         name: 'user1',
-    //     }, 'email', undefined);
-    // });
+    try {
+      const count = await userModel.countDocuments({});
+      if ( count === 0) {
+        await userRepository.create(user);
+      }
+    } catch (err) {
+      throw new Error ('Db error');
+    }
+
 }

@@ -21,7 +21,7 @@ userRouter.route('/me/:id')
                 .get(
                     authMiddleWare('getUsers', 'read'),
                     validationHandler(validation.get),
-                    userRoutes.getUser,
+                    userRoutes.getUserwithID,
                 );
 
 export default userRouter;

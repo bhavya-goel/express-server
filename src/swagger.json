@@ -292,6 +292,52 @@
             }
           ]
         }
+      },
+      "/user/me/{id}": {
+        "get": {
+          "tags": [
+            "User"
+          ],
+          "summary": "user details for particular ID",
+          "description": "",
+          "operationId": "me with ID",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+                "$ref": "#/definitions/me"
+              }
+            },
+            "403": {
+              "description": "unauthorised",
+              "schema": {
+                "$ref": "#/definitions/Unauthorized"
+              }
+            },
+            "404": {
+              "description": "page not found",
+              "schema": {
+                "$ref": "#/definitions/notFound"
+              }
+            }
+          },
+          "security": [
+            {
+              "Auth": []
+            }
+          ]
+        }
       }
     },
     "definitions": {

@@ -5,7 +5,8 @@ import { Database } from "../libs";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
-let token;
+let token = null;
+let id = null;
 
 describe("Sucessfully fetch logged user details", () => {
   beforeAll(async (done) => {
@@ -27,6 +28,14 @@ describe("Sucessfully fetch logged user details", () => {
     token = res.body.data;
     done();
   });
+
+  beforeEach(async (done) => {
+    const res = await request(app1.app)
+      .get("/api/user/me")
+      .set("Authorization", token);
+    id = res.body.data.originalID;
+    done();
+  });
   // afterAll(async (done) => {
   //   await app1.close();
   //   console.log("closed");
@@ -34,23 +43,23 @@ describe("Sucessfully fetch logged user details", () => {
   // });
   test("try to fetch user successfully", async (done) => {
     const res = await request(app1.app)
-      .get("/api/user/me")
+      .get(`/api/user/me/${id}`)
       .set("Authorization", token);
 
     expect(res.body).toHaveProperty("data");
     expect(res.status).toEqual(200);
-    expect(res.body.message).toMatch("User details fetched");
+    expect(res.body.message).toMatch("User Details Fetched");
     done();
   });
 
-  test("try not to fetch user by using wrong token", async (done) => {
+  test("try not to fetch user by using wrong ID", async (done) => {
     const res = await request(app1.app)
-      .get("/api/user/me")
-      .set("Authorization", `${token}ws`);
+      .get("/api/user/me/12345")
+      .set("Authorization", token);
 
     expect(res.body).toHaveProperty("error");
-    expect(res.body.message).toEqual("Authentication failed");
-    expect(res.status).toEqual(401);
+    expect(res.body.message).toEqual("Provide correct ID");
+    expect(res.status).toEqual(400);
     done();
   });
 
