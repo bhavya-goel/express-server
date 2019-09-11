@@ -19,7 +19,7 @@ export default (moduleName, permissionType) => async (req, res, next) => {
         if (!user) {
             return next({
                 error: 'Forbidden',
-                message: 'Authentication failed',
+                message: 'User Not Found',
                 status: 401,
             });
         }
@@ -32,7 +32,7 @@ export default (moduleName, permissionType) => async (req, res, next) => {
         else {
             return next({
                 error: 'unauthorized',
-                message: `${info.role} doesn't have access`,
+                message: 'you are not authorized to access it',
                 status: 403,
             });
         }

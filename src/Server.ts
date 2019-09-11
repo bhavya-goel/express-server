@@ -13,9 +13,9 @@ export class Server {
    }
 
    public bootstrap() {
-      this.initBodyParser();
-      this.setupRoutes();
-      return this;
+        this.initBodyParser();
+        this.setupRoutes();
+        return this;
    }
 
    public initBodyParser() {
@@ -33,7 +33,6 @@ export class Server {
       app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
       app.use(routeNotFound);
       app.use(errorHandlerMsg);
-      this.run();
    }
 
    public async run() {
@@ -50,4 +49,5 @@ export class Server {
       }
       return this;
    }
+
 }

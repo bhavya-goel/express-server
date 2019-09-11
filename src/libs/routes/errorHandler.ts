@@ -1,5 +1,7 @@
 const errorHandlerMsg = (errorMessage, request, response, next) => {
-  response.send({
+  response
+  .status(errorMessage.status || 500)
+  .send({
     error: errorMessage.error || 'error',
     message:  errorMessage.message || errorMessage,
     status: errorMessage.status || 500,

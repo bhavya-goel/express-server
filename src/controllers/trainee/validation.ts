@@ -5,7 +5,7 @@ const validation = {
         email: {
             custom: (email: string) => {
                 if (!validateEmail(email)) {
-                    throw new Error('Please enter email in proper format ');
+                    throw new Error('Please enter email in proper format');
                 }
             },
             errorMessage: 'Email is required',
@@ -56,6 +56,20 @@ const validation = {
             number: true,
             required: false,
         },
+
+        sort: {
+          custom: (sort) => {
+            sort = Number(sort);
+            if (!(sort === 1 || sort === -1)) {
+              throw new Error('sort value must be 1 or -1');
+            }
+          },
+          default: 1,
+          errorMessage: 'sort is invalid',
+          in: ['query'],
+          number: true,
+          required: false,
+        },
     },
 
     update:
@@ -63,18 +77,22 @@ const validation = {
         dataToUpdate: {
             custom: (dataToUpdate) => {
                 if (typeof(dataToUpdate) === 'object') {
-                    if ('name' in dataToUpdate) {
-                        const pattern = /^[a-zA-Z0-9]+$/;
-                        if (! pattern.test(dataToUpdate.name)) {
-                            throw new Error('enter a alphanumeric name');
-                        }
-                    }
-                    if ('password' in dataToUpdate && dataToUpdate.password === '') {
-                        throw new Error('password cannot be empty');
-                    }
-                    if ('email' in dataToUpdate && !validateEmail(dataToUpdate.email)) {
-                        throw new Error('Please enter email in proper format');
-                    }
+                  const message = [];
+                  if ('name' in dataToUpdate) {
+                      const pattern = /^[a-zA-Z0-9]+$/;
+                      if (! pattern.test(dataToUpdate.name)) {
+                        message.push('enter an alphanumeric name');
+                      }
+                  }
+                  if ('password' in dataToUpdate && dataToUpdate.password === '') {
+                    message.push('password cannot be empty');
+                  }
+                  if ('email' in dataToUpdate && !validateEmail(dataToUpdate.email)) {
+                    message.push('Please enter email in proper format');
+                  }
+                  if (message.length > 0) {
+                    throw new Error(message.join());
+                  }
                 }
             },
             in: ['body'],

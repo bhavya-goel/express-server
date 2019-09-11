@@ -9,7 +9,8 @@
     "start": "tsc-watch --project . --onSuccess \" npm run nodemon\"",
     "nodemon": "nodemon ./dist/src/index.js",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "preTest": "rimraf dist",
+    "test": "npm run preTest && cross-env NODE_ENV=test jest --coverage --testTimeout=100000"
   },
   "repository": {
     "type": "git",
@@ -32,17 +33,25 @@
     "mongodb": "^3.3.2",
     "mongoose": "^5.6.12",
     "swagger-ui-express": "^4.0.7",
-    "tslint": "^5.18.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/node": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "commitizen": "^4.0.3",
-    "husky": "^3.0.2",
-    "nodemon": "^1.19.1",
+    "tslint": "^5.18.0",
     "tsc-watch": "^2.2.1",
     "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "babel-jest": "^24.9.0",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/plugin-transform-typescript": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.18",
+    "commitizen": "^4.0.3",
+    "cross-env": "^5.2.1",
+    "husky": "^3.0.2",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.2"
   },
   "husky": {
     "hooks": {

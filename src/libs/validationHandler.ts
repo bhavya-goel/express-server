@@ -20,15 +20,14 @@ const validationHandler = (config) => (req, res, next) => {
                 keyValue = req[place][key];
             }
             else {
-                error.push(key);
+                error.push(`${key} is required`);
             }
         }
     });
     if (error.length !== 0) {
-        const message = error.join() + ' is required';
         return next({
             error: 'Bad Request',
-            message,
+            message: error,
             status: 400,
         });
     }
@@ -77,7 +76,7 @@ const validationHandler = (config) => (req, res, next) => {
                 index.custom(keyValue);
             }
             catch (err) {
-                error.push(err.message);
+              error.push(err.message);
             }
         }
     });
