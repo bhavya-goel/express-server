@@ -2,7 +2,6 @@ import { configuration } from "../config";
 import { Database } from "../libs";
 import { Server } from "../Server";
 import request from "supertest";
-import { userModel } from "../repositories/user/UserModel";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
@@ -16,8 +15,10 @@ describe("Sucessfully to perform operations via trainee token", () => {
     const server = new Server(configuration);
     app1 = await server.bootstrap();
     await Database.open(url);
-    userModel.deleteMany({role: "trainee"});
+    done();
+  });
 
+  beforeAll(async (done) => {
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -26,7 +27,6 @@ describe("Sucessfully to perform operations via trainee token", () => {
         "password": "trainer@123" });
     token = res.body.data;
     done();
-
   });
 
   beforeAll(async (done) => {

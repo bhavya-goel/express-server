@@ -2,7 +2,6 @@ import { configuration } from "../config";
 import { Database } from "../libs";
 import { Server } from "../Server";
 import request from "supertest";
-import { userModel } from "../repositories/user/UserModel";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
@@ -15,7 +14,6 @@ describe("Sucessfully fetch all trainee details", () => {
     const server = new Server(configuration);
     app1 = await server.bootstrap();
     await Database.open(url);
-    userModel.deleteMany({role: "trainee"});
     done();
   });
 

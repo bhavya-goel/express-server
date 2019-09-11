@@ -1,7 +1,6 @@
 import { configuration } from "../config";
 import { Server } from "../Server";
 import request from "supertest";
-import { userModel } from "../repositories/user/UserModel";
 import { Database } from "../libs";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
@@ -12,13 +11,10 @@ let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully update trainee ", () => {
   beforeAll(async (done) => {
-
     const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
     await Database.open(url);
-
-    userModel.deleteMany({role: "trainee"});
     done();
   });
 
