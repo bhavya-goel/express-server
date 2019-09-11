@@ -78,6 +78,14 @@ const validation = {
             custom: (dataToUpdate) => {
                 if (typeof(dataToUpdate) === 'object') {
                   const message = [];
+                  if (true) {
+                    const allowed = ['name', 'email', 'password'];
+                    const properties = Object.getOwnPropertyNames(dataToUpdate);
+                    const result = properties.filter((property) => allowed.includes(property));
+                    if (result.length <= 0) {
+                      throw new Error('please provide something meaningful to update');
+                    }
+                  }
                   if ('name' in dataToUpdate) {
                       const pattern = /^[a-zA-Z0-9]+$/;
                       if (! pattern.test(dataToUpdate.name)) {

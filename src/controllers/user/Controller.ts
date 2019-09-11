@@ -59,7 +59,7 @@ class UserRoutes {
    public async getUserwithID(req, res, next) {
      try {
       const { id } = req.params;
-      const result = await userRepository.get({ originalID: id });
+      const result = await userRepository.get({ originalID: id }, { password: 0 });
       if ( !result ) {
         throw new Error('user not found');
       }

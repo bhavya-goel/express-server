@@ -139,4 +139,20 @@ describe('Sucessfully update trainee ', () => {
 
     done();
   });
+
+  test('try to update without any dataToUpdate field', async (done) => {
+    const res = await request(app1.app)
+      .put('/api/trainee')
+      .set('Accept', 'application/json')
+      .set('Authorization', token)
+      .send({
+        dataToUpdate: {},
+        id: '' });
+
+    expect(res.body).toHaveProperty('error');
+    expect(res.status).toEqual(400);
+    expect(res.body.message).toContain('please provide something meaningful to update');
+    expect(res.body.message).toContain('id cannot be empty');
+    done();
+  });
 });
