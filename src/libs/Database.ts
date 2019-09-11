@@ -13,11 +13,6 @@ class Database {
           }
       });
     }
-
-    public static close() {
-        mongoose.disconnect();
-        console.log(' DB connection closed');
-    }
 }
 
 export default Database;

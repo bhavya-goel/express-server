@@ -8,11 +8,11 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 let app1;
 let token = null;
 let id = null;
+let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully update trainee ", () => {
-  beforeEach(async (done) => {
+  beforeAll(async (done) => {
 
-    const mongoServer = new MongoMemoryServer();
     const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
@@ -22,7 +22,7 @@ describe("Sucessfully update trainee ", () => {
     done();
   });
 
-  beforeEach(async (done) => {
+  beforeAll(async (done) => {
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -33,7 +33,7 @@ describe("Sucessfully update trainee ", () => {
     done();
   });
 
-  beforeEach(async (done) => {
+  beforeAll(async (done) => {
     const res = await request(app1.app)
       .post("/api/trainee")
       .set("Accept", "application/json")
@@ -45,11 +45,13 @@ describe("Sucessfully update trainee ", () => {
     id = res.body.data.originalID;
     done();
   });
-  // afterEach(async (done) => {
-  //   await app1.close();
-  //   console.log("closed");
-  //   done();
-  // });
+
+  afterAll(async (done) => {
+    await mongoServer.stop();
+    console.log("closed");
+    done();
+  });
+
   test("try to update trainee successfully", async (done) => {
     const res = await request(app1.app)
       .put("/api/trainee")

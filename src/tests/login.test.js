@@ -6,21 +6,23 @@ import { Database } from "../libs";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
+let mongoServer = new MongoMemoryServer();
 
 describe("Login EndPoint", () => {
   beforeAll(async (done) => {
-    const mongoServer = new MongoMemoryServer();
     const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
     await Database.open(url);
     done();
   });
-  // afterAll(async (done) => {
-  //   await Database.close();
-  //   console.log("closed");
-  //   done();
-  // });
+
+  afterAll(async (done) => {
+    await mongoServer.stop();
+    console.log("closed");
+    done();
+  });
+
   test("try to login successfully", async (done) => {
     const res = await request(app1.app)
       .post("/api/user/login")

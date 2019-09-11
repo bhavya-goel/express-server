@@ -7,10 +7,10 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 let app1;
 let token = null;
 let id = null;
+let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully fetch logged user details", () => {
   beforeAll(async (done) => {
-    const mongoServer = new MongoMemoryServer();
     const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
@@ -18,7 +18,7 @@ describe("Sucessfully fetch logged user details", () => {
     done();
   });
 
-  beforeEach(async (done) => {
+  beforeAll(async (done) => {
     const res = await request(app1.app)
       .post("/api/user/login")
       .set("Accept", "application/json")
@@ -29,18 +29,20 @@ describe("Sucessfully fetch logged user details", () => {
     done();
   });
 
-  beforeEach(async (done) => {
+  beforeAll(async (done) => {
     const res = await request(app1.app)
       .get("/api/user/me")
       .set("Authorization", token);
     id = res.body.data.originalID;
     done();
   });
-  // afterAll(async (done) => {
-  //   await app1.close();
-  //   console.log("closed");
-  //   done();
-  // });
+
+  afterAll(async (done) => {
+    await mongoServer.stop();
+    console.log("closed");
+    done();
+  });
+
   test("try to fetch user successfully", async (done) => {
     const res = await request(app1.app)
       .get(`/api/user/me/${id}`)

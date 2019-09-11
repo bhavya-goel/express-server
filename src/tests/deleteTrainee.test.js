@@ -7,10 +7,10 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
 let token;
+let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully delete trainee ", () => {
   beforeAll(async (done) => {
-    const mongoServer = new MongoMemoryServer();
     const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
@@ -29,11 +29,13 @@ describe("Sucessfully delete trainee ", () => {
     token = res.body.data;
     done();
   });
-  // afterAll(async (done) => {
-  //   await app1.close();
-  //   console.log("closed");
-  //   done();
-  // });
+
+  afterAll(async (done) => {
+    await mongoServer.stop();
+    console.log("closed");
+    done();
+  });
+
   test("try to delete trainee successfully", async (done) => {
 
     // creating a trainee to be deleted

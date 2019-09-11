@@ -8,10 +8,10 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 let app1;
 let token = null;
 let traineeToken = null;
+let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully to perform operations via trainee token", () => {
   beforeAll(async (done) => {
-    const mongoServer = new MongoMemoryServer();
     const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
@@ -51,11 +51,13 @@ describe("Sucessfully to perform operations via trainee token", () => {
     done();
 
   });
-  // afterAll(async (done) => {
-  //   await app1.close();
-  //   console.log("closed");
-  //   done();
-  // });
+
+  afterAll(async (done) => {
+    await mongoServer.stop();
+    console.log("closed");
+    done();
+  });
+
   test("try to fetch trainee details successfully", async (done) => {
     const res = await request(app1.app)
       .get("/api/user/me")

@@ -7,10 +7,10 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
 let token;
+let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully fetch all trainee details", () => {
   beforeAll(async (done) => {
-    const mongoServer = new MongoMemoryServer();
     const url = await mongoServer.getConnectionString();
     const server = new Server(configuration);
     app1 = await server.bootstrap();
@@ -29,11 +29,13 @@ describe("Sucessfully fetch all trainee details", () => {
     token = res.body.data;
     done();
   });
-  // afterAll(async (done) => {
-  //   await app1.close();
-  //   console.log("closed");
-  //   done();
-  // });
+
+  afterAll(async (done) => {
+    await mongoServer.stop();
+    console.log("closed");
+    done();
+  });
+
   test("try to create trainee successfully", async (done) => {
     const res = await request(app1.app)
       .post("/api/trainee")
