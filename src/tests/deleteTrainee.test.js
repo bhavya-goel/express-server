@@ -1,19 +1,12 @@
-import { configuration } from "../config";
-import { Database } from "../libs";
-import { Server } from "../Server";
+import config from "./config";
 import request from "supertest";
-import { MongoMemoryServer } from "mongodb-memory-server";
 
 let app1;
 let token;
-let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully delete trainee ", () => {
   beforeAll(async (done) => {
-    const url = await mongoServer.getConnectionString();
-    const server = new Server(configuration);
-    app1 = await server.bootstrap();
-    await Database.open(url);
+    app1 = await config.start();
     done();
   });
 
@@ -29,7 +22,7 @@ describe("Sucessfully delete trainee ", () => {
   });
 
   afterAll(async (done) => {
-    await mongoServer.stop();
+    await config.close();
     console.log("closed");
     done();
   });
@@ -54,6 +47,8 @@ describe("Sucessfully delete trainee ", () => {
       .set("Authorization", token);
 
     expect(res1.body).toHaveProperty("data");
+    expect(res1.body.data).toHaveProperty("id");
+    expect(res1.body.data.id).toEqual(id);
     expect(res1.status).toEqual(200);
     expect(res1.body.message).toMatch("Trainee Deleted Successfully");
     done();

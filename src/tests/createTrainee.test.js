@@ -1,19 +1,12 @@
-import { configuration } from "../config";
-import { Database } from "../libs";
-import { Server } from "../Server";
 import request from "supertest";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import config from "./config";
 
 let app1;
 let token;
-let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully fetch all trainee details", () => {
   beforeAll(async (done) => {
-    const url = await mongoServer.getConnectionString();
-    const server = new Server(configuration);
-    app1 = await server.bootstrap();
-    await Database.open(url);
+    app1 = await config.start();
     done();
   });
 
@@ -29,7 +22,7 @@ describe("Sucessfully fetch all trainee details", () => {
   });
 
   afterAll(async (done) => {
-    await mongoServer.stop();
+    await config.close();
     console.log("closed");
     done();
   });
@@ -44,6 +37,8 @@ describe("Sucessfully fetch all trainee details", () => {
         "password": "abc" });
 
     expect(res.body).toHaveProperty("data");
+    expect(res.body.data).toHaveProperty("name");
+    expect(res.body.data.name).toEqual("abc");
     expect(res.status).toEqual(200);
     expect(res.body.message).toMatch("Trainee Created Successfully");
 

@@ -1,24 +1,16 @@
-// import { config } from "dotenv";
-import { configuration } from "../config";
-import { Server } from "../Server";
 import request from "supertest";
-import { Database } from "../libs";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import config from "./config";
 
 let app1;
-let mongoServer = new MongoMemoryServer();
 
 describe("Login EndPoint", () => {
   beforeAll(async (done) => {
-    const url = await mongoServer.getConnectionString();
-    const server = new Server(configuration);
-    app1 = await server.bootstrap();
-    await Database.open(url);
+    app1 = await config.start();
     done();
   });
 
   afterAll(async (done) => {
-    await mongoServer.stop();
+    await config.close();
     console.log("closed");
     done();
   });

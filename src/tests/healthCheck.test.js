@@ -1,14 +1,11 @@
-// import { config } from "dotenv";
-import { configuration } from "../config";
-import { Server } from "../Server";
 import request from "supertest";
+import config from "./config";
 
 let app1;
 
 describe("Login EndPoint", () => {
   beforeAll(async (done) => {
-    const server = new Server(configuration);
-    app1 = await server.bootstrap();
+    app1 = await config.start();
     done();
   });
 

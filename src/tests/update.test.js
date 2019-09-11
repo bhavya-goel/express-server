@@ -1,20 +1,13 @@
-import { configuration } from "../config";
-import { Server } from "../Server";
 import request from "supertest";
-import { Database } from "../libs";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import config from "./config";
 
 let app1;
 let token = null;
 let id = null;
-let mongoServer = new MongoMemoryServer();
 
 describe("Sucessfully update trainee ", () => {
   beforeAll(async (done) => {
-    const url = await mongoServer.getConnectionString();
-    const server = new Server(configuration);
-    app1 = await server.bootstrap();
-    await Database.open(url);
+    app1 = await config.start();
     done();
   });
 
@@ -43,7 +36,7 @@ describe("Sucessfully update trainee ", () => {
   });
 
   afterAll(async (done) => {
-    await mongoServer.stop();
+    await config.close();
     console.log("closed");
     done();
   });
@@ -59,6 +52,8 @@ describe("Sucessfully update trainee ", () => {
         "id": id });
 
     expect(res.body).toHaveProperty("data");
+    expect(res.body.data).toHaveProperty("id");
+    expect(res.body.data.id).toEqual(id);
     expect(res.status).toEqual(200);
     expect(res.body.message).toMatch("Trainee Updated Successfully");
     done();
