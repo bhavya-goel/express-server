@@ -4,7 +4,7 @@ import config from './config';
 let app1;
 let token;
 
-describe('Sucessfully fetch all trainee details', () => {
+describe('Sucessfully create trainee', () => {
   beforeAll(async (done) => {
     app1 = await config.start();
     done();

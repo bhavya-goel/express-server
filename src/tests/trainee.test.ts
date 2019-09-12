@@ -5,7 +5,7 @@ let app1;
 let token;
 let traineeToken;
 
-describe('Sucessfully to perform operations via trainee token', () => {
+describe('Sucessfully perform operations via trainee token', () => {
   beforeAll(async (done) => {
     app1 = await config.start();
     done();

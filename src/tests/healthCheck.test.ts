@@ -3,7 +3,7 @@ import config from './config';
 
 let app1;
 
-describe('Login EndPoint', () => {
+describe('Health-check', () => {
   beforeAll(async (done) => {
     app1 = await config.start();
     done();
